@@ -1,0 +1,22 @@
+<%- include("../partials/header") %>
+<h1>Trainees Index</h1>
+<table>
+  <a href="/trainees/new">Add New Trainee</a>
+  <thead>
+    <th>Name</th>
+    <th>Status</th>
+    <th>Actions</th>
+  </thead>
+  <tbody>
+    <% trainees.forEach((trainee)=>{ %>
+    <tr>
+      <td><%= trainee.name %></td>
+      <td>some status</td>
+      <td><a href="/trainees/<%=trainee._id%>">Show Details</a></td>
+    </tr>
+
+    <% })%>
+  </tbody>
+</table>
+
+<%- include("../partials/footer")%> %>

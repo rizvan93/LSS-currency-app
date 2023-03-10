@@ -1,22 +1,15 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-//const requiremnets = require("XXXXXXXXX");
+
+accounts = ["admin", "trainee", "trainer"];
 
 const userSchema = new Schema(
   {
-    name: { type: String, required: true },
-    unit: { type: String, required: true },
+    userId: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    account: { type: String, required: true, enum: accounts },
   },
   { timestamps: true }
 );
 
-//requirements.forEach((requirement)=>{
-const nestedSchema = {
-  lastAttended: { type: mongoose.ObjectId, required: true },
-  nextBooked: { type: mongoose.ObjectId },
-};
-
-userSchema[requirement.name] = nestedSchema;
-//})
-
-module.exports = mongoose.Model("User", userSchema);
+module.exports = mongoose.model("User", userSchema);

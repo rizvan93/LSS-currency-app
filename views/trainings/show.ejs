@@ -1,0 +1,37 @@
+<%- include("../partials/header")%>
+<div>
+  <h1><%= training.type %></h1>
+  <h4><%= dayjs(training.date).format("D-MMM-YY")%></h4>
+  <h4>Start: <%= training.startTime%>H</h4>
+  <h4>End: <%= training.endTime %>H</h4>
+  <h4>
+    Vacancies: <%=training.capacity - trainees.length%>/<%=training.capacity%>
+  </h4>
+</div>
+<a href="/trainings/<%= training._id %>/edit">Edit</a>
+<form action="/trainings/<%= training._id %>?_method=DELETE" method="post">
+  <button>Delete</button>
+</form>
+
+<div>
+  <% if (trainees.length) { %>
+  <h4>Attendees:</h4>
+  <table>
+    <thead>
+      <th>Name</th>
+      <th>Actions</th>
+    </thead>
+    <tbody>
+      <% trainees.forEach((trainee) => { %>
+      <tr>
+        <td><%=trainee.name%></td>
+        <td><a href="someupdate">Verify Completion</a></td>
+      </tr>
+      <% })%>
+    </tbody>
+  </table>
+  <% } else { %>
+  <h4>No Attendees</h4>
+  <% }%>
+</div>
+<%- include("../partials/footer")%>

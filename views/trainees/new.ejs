@@ -1,0 +1,18 @@
+<%- include("../partials/header")%>
+<h1>Add New Trainee</h1>
+<p><%=message%></p>
+<form method="post" action="/trainees">
+  <fieldset>
+    <legend>Trainee Particulars</legend>
+    <label>Name:<input name="name" />*</label>
+  </fieldset>
+  <% requirementNames.forEach((requirementName) => { %>
+  <fieldset>
+    <legend><%=requirementName%></legend>
+    <label
+      >Last Attended: <input name="<%=requirementName%>" type="date" />*</label
+    >
+  </fieldset>
+  <%}) %>
+  <button>Add</button>
+</form>

@@ -1,0 +1,22 @@
+<%- include("../partials/header")%>
+<h1>Edit Trainee</h1>
+
+<p><%=message%></p>
+
+<form method="post" action="/trainees">
+  <fieldset>
+    <legend>Trainee Particulars</legend>
+    <label>Name:<input name="name" value="<%=trainee.name%>" />*</label>
+  </fieldset>
+  <% requirementNames.forEach((requirementName, index) => { %>
+  <fieldset>
+    <legend><%=requirementName%></legend>
+    <label
+      >Last Attended: <input name="<%=requirementName%>" type="date"
+      value="<%=dayjs(trainee.currencies[index].lastAttended).format("YYYY-MM-DD")%>"
+      />*</label
+    >
+  </fieldset>
+  <%}) %>
+  <button>Update</button>
+</form>

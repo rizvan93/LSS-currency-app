@@ -1,0 +1,23 @@
+<%- include("../partials/header")%>
+<h1><%= trainee.name %></h1>
+<h3>OVERALL STATUS</h3>
+
+<% trainee.currencies.forEach((currency)=>{ %>
+<div>
+  <h4><%= currency.type%></h4>
+  <p><%= currency.lastAttended %></p>
+  <% if(currency.nextBooked) { %>
+  <p><%= currency.nextBooked.date%></p>
+  <a href="/trainings/show/<%=currency.nextBooked._id%>">Change Booking</a>
+  <%} else { %>
+  <a href="/trainings/<%=currency.type%>/book">Make New Booking</a>
+  <% } %>
+</div>
+<% }) %>
+
+<a href="/trainees/<%=trainee._id%>/edit">EDIT</a>
+<form method="post" action="/trainees/<%=trainee._id%>?_method=DELETE">
+  <button>DELETE</button>
+</form>
+
+<%- include("../partials/footer")%>

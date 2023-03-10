@@ -1,0 +1,25 @@
+<%- include("../partials/header")%>
+
+<h1>Create New Session</h1>
+
+<form method="post" action="/trainings">
+<fieldset>
+    <legend>Details of new training session</legend>
+    <label>
+        <select name="type" required>
+            <option value="">Select an option</option>
+            <% requirementNames.forEach((requirementName)=>{ %>
+                <option value="<%= requirementName%>"><%= requirementName %></option>
+            <% }) %>
+        </select>
+    </label>
+    <label>Date: <input type="date" required/></label>
+    <label>Start Time: <input name="startTime" type="time" required/></label>
+    <label>End Time: <input name="endTime" type="time" required/></label>
+    <label>Capacity: <input name="capacity" type="number" required min="1" value="0"/> </label>
+    <button method="post" action="/trainings" >Create</button>
+</fieldset>
+
+</form>
+  <%- include("../partials/footer")%>
+</a>

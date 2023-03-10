@@ -1,0 +1,29 @@
+<%- include("../partials/header")%>
+
+<h1>Training Index</h1>
+<a href="/trainings/new">Add New Training</a>
+  <table>
+    <thead>
+      <th>Type</th>
+
+      <th>Date</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Capacity</th>
+      <th>Actions</th>
+    </thead>
+    <tbody>
+      <% trainings.forEach((training)=>{ %>
+      <tr>
+        <td><%= training.type %></td>
+        <td><%= dayjs(training.date).format("D-MMM-YY") %></td>
+        <td><%= training.startTime %></td>
+        <td><%= training.endTime %></td>
+        <td><%= training.capacity %></td>
+        <td><a href="/trainings/<%= training._id %>">Show Details</a></td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <%- include("../partials/footer")%>
+</a>
