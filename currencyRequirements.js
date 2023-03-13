@@ -24,18 +24,24 @@ const findNextDue = {
 const names = Object.keys(findNextDue);
 
 const overallStatus = (expiries) => {
-  names.forEach((name) => {
-    if (dayjs(expiries[name]).isAfter(dayjs(), "day")) {
+  for (const name in expiries) {
+    const expired = dayjs(expiries[name]).isBefore(dayjs(), "day");
+
+    if (expired) {
       return "EXPIRED";
     }
-    if (
-      dayjs(expiries[name])
-        .add(3, "month")
-        .isAfter((dayjs(), "day"))
-    ) {
-      return "Recurrency due soon";
+  }
+
+  for (const name in expiries) {
+    const dueSoon = dayjs(expiries[name])
+      .subtract(3, "month")
+      .isBefore(dayjs(), "day");
+
+    if (dueSoon) {
+      return "EXPIRED";
     }
-  });
+  }
+
   return "Current";
 };
 
