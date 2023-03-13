@@ -2,11 +2,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const requirements = require("../currencyRequirements");
 
-const requirementNames = Object.keys(requirements);
-
 const currencySchema = new Schema(
   {
-    type: { type: String, required: true, enum: requirementNames },
+    type: { type: String, required: true, enum: requirements.names },
     lastAttended: { type: Date },
   },
   { timestamps: true }

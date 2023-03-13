@@ -1,11 +1,8 @@
 const Training = require("../models/training");
-const Trainees = require("../models/trainee");
 const dayjs = require("dayjs");
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 const requirements = require("../currencyRequirements");
-
-const requirementNames = Object.keys(requirements);
 
 const seed = async (req, res) => {
   const newTraining = {
@@ -39,7 +36,7 @@ const show = async (req, res) => {
 };
 
 const newTraining = (req, res) => {
-  // res.send("new training");
+  const requirementNames = requirements.names;
   res.render("trainings/new", { requirementNames });
 };
 

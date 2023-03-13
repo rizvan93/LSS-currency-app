@@ -10,13 +10,17 @@
     <label>Contact: <input name="contact" required />*</label><br />
     <label>Vehicle Number: <input name="vehNum" /></label>
   </fieldset>
-  <% requirementNames.forEach((requirementName) => { %>
+
   <fieldset>
-    <legend><%=requirementName%></legend>
+    <legend>Last Attended Dates</legend>
+
+    <% requirementNames.forEach((requirementName) => { %>
     <label
-      >Last Attended: <input name="<%=requirementName%>" type="date" />*</label
+      ><%= requirementName %>:
+      <input name="<%=requirementName%>" type="date" />*</label
     >
+    <br />
+    <%}) %>
   </fieldset>
-  <%}) %>
   <button>Add</button>
 </form>

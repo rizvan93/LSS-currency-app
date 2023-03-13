@@ -3,7 +3,6 @@ const Training = require("../models/training");
 const dayjs = require("dayjs");
 
 const requirements = require("../currencyRequirements");
-const requirementNames = Object.keys(requirements);
 
 const seed = async (req, res) => {
   const trainings = await Training.find({});
@@ -56,6 +55,7 @@ const show = async (req, res) => {
 };
 
 const newTrainee = (req, res) => {
+  const requirementNames = requirements.names;
   res.render("trainees/new", { requirementNames, message: "" });
 };
 
@@ -66,10 +66,10 @@ const create = async (req, res) => {
   newTrainee.contact = req.body.contact;
   newTrainee.vehNum = req.body.vehNum;
   newTrainee.currencies = [];
-  requirementNames.forEach((requirementName) => {
+  requirements.names.forEach((name) => {
     const currency = {
-      type: requirementName,
-      lastAttended: req.body[requirementName],
+      type: name,
+      lastAttended: req.body[name],
     };
     newTrainee.currencies.push(currency);
   });
@@ -89,6 +89,7 @@ const edit = async (req, res) => {
   const { id } = req.params;
   const trainee = await Trainee.findById(id);
   //   res.send(JSON.stringify(trainee));
+  const requirementNames = requirements.names;
   res.render("trainees/edit", {
     trainee,
     message: "",
