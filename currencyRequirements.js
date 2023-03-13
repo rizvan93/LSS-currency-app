@@ -1,15 +1,28 @@
 const dayjs = require("dayjs");
 
 const findNextDue = {
-  req1: (lastAttended) => {
-    dayjs(lastAttended).dayjs.add(1, "year");
+  ACE: (lastAttended, dateOfBirth) => {
+    return dayjs(dateOfBirth).endOf("month");
   },
-  req2: (lastAttended) => {
-    dayjs(lastAttended).dayjs.add(6, "month");
+  APT: (lastAttended) => {
+    return dayjs(lastAttended).add(3, "year").endOf("month");
   },
-  req3: (lastAttended) => {
-    dayjs(lastAttended).dayjs.add(2, "year");
+  "NVG Refresher": (lastAttended) => {
+    return dayjs(lastAttended).add(3, "year").endOf("month");
+  },
+  YOGA: (lastAttended) => {
+    return dayjs(lastAttended).add(1, "year").endOf("month");
+  },
+  "Survival Refresher Videos": (lastAttended) => {
+    return dayjs(lastAttended).add(1, "year").endOf("month");
+  },
+  "Dinghy Drill & Ejection Seat Trainer": (lastAttended) => {
+    return dayjs(lastAttended).add(2, "year").endOf("month");
   },
 };
 
-module.exports = findNextDue;
+const names = Object.keys(findNextDue);
+
+const overallStatus = () => {};
+
+module.exports = { findNextDue, names, overallStatus };

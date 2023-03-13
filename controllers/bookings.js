@@ -24,21 +24,31 @@ const edit = async (req, res) => {
   res.render("bookings/edit", { trainings, traineeId, type, id, dayjs });
 };
 
-const update = (req, res) => {
+const update = async (req, res) => {
   const { id } = req.params;
   const { traineeId, previousBooking } = req.body;
-  res.send(`Change ${previousBooking} to ${id} for ${traineeId}`);
+
+  const training = await Training.findById(previousBooking);
+  const index = training.trainees.indexOf(traineeId.toString());
+  training.trainees.splice(index, 1);
+  await training.save();
+
+  const newTraining = await Training.findById(id);
+  newTraining.trainees.push(traineeId);
+  await newTraining.save();
+
+  res.redirect("/trainees/" + traineeId);
 };
 
 const deleteBooking = async (req, res) => {
   const { id } = req.params;
   const { traineeId } = req.body;
-  const training = await Training.findById(id);
 
+  const training = await Training.findById(id);
   const index = training.trainees.indexOf(traineeId.toString());
   training.trainees.splice(index, 1);
-
   await training.save();
+
   res.redirect("/trainees/" + traineeId);
 };
 

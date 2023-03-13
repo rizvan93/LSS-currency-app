@@ -62,6 +62,7 @@ const newTrainee = (req, res) => {
 const create = async (req, res) => {
   const newTrainee = {};
   newTrainee.name = req.body.name.trim();
+  newTrainee.dOB = req.body.dOB;
   newTrainee.contact = req.body.contact;
   newTrainee.vehNum = req.body.vehNum;
   newTrainee.currencies = [];

@@ -15,9 +15,10 @@ const currencySchema = new Schema(
 const traineeSchema = new Schema(
   {
     name: { type: String, required: true },
-    currencies: [currencySchema],
+    dOB: { type: Date, required: true },
     contact: { type: String, match: /\d{8}/, required: true },
     vehNum: { type: String },
+    currencies: [currencySchema],
   },
   { timestamps: true }
 );
