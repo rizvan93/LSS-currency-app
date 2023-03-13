@@ -1,8 +1,16 @@
 const dayjs = require("dayjs");
 
 const findNextDue = {
-  ACE: (lastAttended, dateOfBirth) => {
-    return dayjs(dateOfBirth).endOf("month");
+  ACE: (lastAttended, dOB) => {
+    const thisYear = dayjs().year();
+    const thisBirthday = dayjs(dOB).year(thisYear);
+    const lastBirthday = thisBirthday.subtract(1, "year");
+
+    if (dayjs(lastAttended).add(2, "month").isBefore(thisBirthday)) {
+      return thisBirthday.add(1, "month");
+    } else {
+      return lastBirthday.add(1, "month");
+    }
   },
   APT: (lastAttended) => {
     return dayjs(lastAttended).add(3, "year").endOf("month");
@@ -25,7 +33,8 @@ const names = Object.keys(findNextDue);
 
 const overallStatus = (expiries) => {
   for (const name in expiries) {
-    const expired = dayjs(expiries[name]).isBefore(dayjs(), "day");
+    const expired = dayjs().isAfter(dayjs(expiries[name]), "day");
+    // console.log(`${name} expires on ${expiries[name]}. expired: ${expired}`);
 
     if (expired) {
       return "EXPIRED";
@@ -33,12 +42,11 @@ const overallStatus = (expiries) => {
   }
 
   for (const name in expiries) {
-    const dueSoon = dayjs(expiries[name])
-      .subtract(3, "month")
-      .isBefore(dayjs(), "day");
+    const dueSoon = dayjs().add(3, "month").isAfter(dayjs(expiries[name]));
+    // console.log(`due soon: ${dueSoon}`);
 
     if (dueSoon) {
-      return "EXPIRED";
+      return "Recurrency due soon";
     }
   }
 

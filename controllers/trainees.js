@@ -51,11 +51,13 @@ const show = async (req, res) => {
     }
 
     const expiry = requirements.findNextDue[currency.type](
-      currency.lastAttended
+      currency.lastAttended,
+      trainee.dOB
     );
     expiries[currency.type] = expiry;
   }
   const status = requirements.overallStatus(expiries);
+  console.log(`overall status: ${status}`);
 
   res.render("trainees/show", { trainee, nextBooked, expiries, status, dayjs });
 };
@@ -104,7 +106,26 @@ const edit = async (req, res) => {
   });
 };
 
-const update = async (req, res) => {};
+const update = async (req, res) => {
+  const { id } = req.params;
+  const trainee = await Trainee.findById(id);
+
+  trainee.name = req.body.name;
+  trainee.dOB = req.body.dOB;
+  trainee.contact = req.body.contact;
+  trainee.vehNum = req.body.vehNum;
+  trainee.currencies = [];
+  requirements.names.forEach((name) => {
+    const currency = {
+      type: name,
+      lastAttended: req.body[name],
+    };
+    trainee.currencies.push(currency);
+  });
+  await trainee.save();
+
+  res.redirect(/trainees/ + trainee._id);
+};
 
 module.exports = {
   seed,

@@ -10,6 +10,6 @@ router.get("/:id", traineeCtrl.show);
 router.post("/", traineeCtrl.create);
 router.delete("/:id", traineeCtrl.delete);
 router.get("/:id/edit", traineeCtrl.edit);
-router.put("/id", traineeCtrl.update);
+router.put("/:id", traineeCtrl.update);
 
 module.exports = router;

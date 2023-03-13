@@ -3,7 +3,7 @@
 
 <p><%=message%></p>
 
-<form method="post" action="/trainees">
+<form method="post" action="/trainees/<%=trainee._id%>?_method=PUT">
   <fieldset>
     <legend>Trainee Particulars</legend>
     <label
@@ -11,12 +11,10 @@
     /></label>
     <br />
     <label
-      >Date of Birth*:<input
-        name="dOB"
-        value="<%=trainee.dOB%>"
-        type="date"
-        required
-    /></label>
+      >Date of Birth*:<input name="dOB"
+      value="<%=dayjs(trainee.dOB).format("YYYY-MM-DD")%>" type="date" required
+      /></label
+    >
     <br />
     <label
       >Contact*:
@@ -33,7 +31,7 @@
     <label
       ><%=requirementName%>*: <input name="<%=requirementName%>" type="date"
       value="<%=dayjs(trainee.currencies[index].lastAttended).format("YYYY-MM-DD")%>"
-      /></label
+      required /></label
     >
     <br />
     <%}) %>
