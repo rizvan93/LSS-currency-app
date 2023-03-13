@@ -18,7 +18,11 @@
         %>
       </td>
       <td>
-        <a href="/trainees/<%=traineeId%>/bookings/<%=training._id%>">Book</a>
+        <form method="post" action="/bookings/">
+          <input name="traineeId" value="<%=traineeId%>" hidden />
+          <input name="trainingId" value="<%=training._id%>" hidden />
+          <button>Book</button>
+        </form>
       </td>
     </tr>
     <%})%>

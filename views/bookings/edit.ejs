@@ -1,0 +1,41 @@
+<%- include("../partials/header")%>
+<h1>Change a Booking: <%=type%></h1>
+
+<table>
+  <thead>
+    <th>Start</th>
+    <th>End</th>
+    <th>Vacancies</th>
+    <th>Actions</th>
+  </thead>
+  <tbody>
+    <% trainings.forEach((training) => {%>
+    <tr>
+      <td><%= dayjs(training.start).format("D MMM YY HH:mm") %></td>
+      <td><%= dayjs(training.end).format("D MMM YY HH:mm") %></td>
+      <td>
+        <%= training.capacity - training.trainees.length%>/<%=training.capacity
+        %>
+      </td>
+      <td>
+        <% if (training._id.toString() === id) { %>
+        <form method="post" action="/bookings/?_method=DELETE">
+          <input name="traineeId" value="<%=traineeId%>" hidden />
+          <input name="trainingId" value="<%=training._id%>" hidden />
+          <button>Delete Booking</button>
+        </form>
+        <%} else {%>
+        <form method="post" action="/bookings/?=method=PUT">
+          <input name="traineeId" value="<%=traineeId%>" hidden />
+          <input name="previousBooking" value="<%=id%>" hidden />
+          <input name="trainingId" value="<%=training._id%>" hidden />
+          <button>Change Booking</button>
+        </form>
+        <%}%>
+      </td>
+    </tr>
+    <%})%>
+  </tbody>
+</table>
+
+<%- include("../partials/footer")%>

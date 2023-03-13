@@ -49,9 +49,10 @@ const show = async (req, res) => {
       "end"
     );
     if (booking) {
-      nextBooked[currency.type] = booking.end;
+      nextBooked[currency.type] = booking;
     }
   }
+  console.log(nextBooked);
   res.render("trainees/show", { trainee, nextBooked, dayjs });
   //   res.send("show trainee currency 2: " + "\n" + trainee.currencies[2]);
 };
@@ -96,21 +97,6 @@ const edit = async (req, res) => {
 
 const update = async (req, res) => {};
 
-const newBooking = async (req, res) => {
-  const { traineeId, type } = req.params;
-  const trainings = await Training.find({ type: type });
-
-  res.render("trainees/book", { trainings, traineeId, type, dayjs });
-};
-
-const book = async (req, res) => {
-  // res.send("confirm this booking");
-  const { traineeId, trainingId } = req.params;
-  const update = { $push: { trainees: traineeId } };
-  const updatedTraining = await Training.findByIdAndUpdate(trainingId, update);
-  res.redirect("/trainees/" + traineeId);
-};
-
 module.exports = {
   seed,
   index,
@@ -120,6 +106,4 @@ module.exports = {
   delete: deleteTrainee,
   edit,
   update,
-  newBooking,
-  book,
 };

@@ -9,10 +9,14 @@
   <h4><%= currency.type%></h4>
   <p>Last Attended: <%= dayjs(currency.lastAttended).format("D MMM YY") %></p>
   <% if (nextBooked[currency.type]) {%>
-  <p>Next Booking: <%= dayjs(nextBooked[currency.type]).format("D MMM YY")%></p>
-  <a href="something">Change Booking</a>
+  <p>
+    Next Booking: <%= dayjs(nextBooked[currency.type].end).format("D MMM YY")%>
+  </p>
+  <a href="/bookings/edit/<%=nextBooked[currency.type]._id%>/<%=trainee._id%>"
+    >Change Booking</a
+  >
   <%} else {%>
-  <a href="/trainees/<%=trainee._id%>/bookings/<%=currency.type%>/new"
+  <a href="/bookings/new/<%=trainee._id%>/<%=currency.type%>/"
     >Make New Booking</a
   >
   <%}%>
