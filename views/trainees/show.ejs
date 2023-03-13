@@ -1,29 +1,36 @@
 <%- include("../partials/header")%>
 <h1><%= trainee.name %></h1>
-<h3>OVERALL STATUS</h3>
+<h3><%=status%></h3>
 <p>Contact: <%=trainee.contact%></p>
 <p>Vehicle Number: <%=trainee.vehNo%></p>
 
 <% trainee.currencies.forEach((currency)=>{ %>
-<div>
-  <h4><%= currency.type%></h4>
-  <p>Last Attended: <%= dayjs(currency.lastAttended).format("D MMM YY") %></p>
+<dl>
+  <dt><b><%= currency.type%></b></dt>
+  <dd>Last Attended: <%= dayjs(currency.lastAttended).format("D MMM YY") %></dd>
+  <dd>Expires: <%= dayjs(expiries[currency.type]).format("D MMM YY") %></dd>
   <% if (nextBooked[currency.type]) {%>
-  <p>
+  <dd>
     Next Booking: <%= dayjs(nextBooked[currency.type].end).format("D MMM YY")%>
-  </p>
-  <a href="/bookings/edit/<%=nextBooked[currency.type]._id%>/<%=trainee._id%>"
-    >Change Booking</a
-  >
+  </dd>
+  <dd>
+    <a href="/bookings/edit/<%=nextBooked[currency.type]._id%>/<%=trainee._id%>"
+      >Change Booking</a
+    >
+  </dd>
   <%} else {%>
-  <a href="/bookings/new/<%=trainee._id%>/<%=currency.type%>/"
-    >Make New Booking</a
-  >
+  <dd>
+    <a href="/bookings/new/<%=trainee._id%>/<%=currency.type%>/"
+      >Make New Booking</a
+    >
+  </dd>
   <%}%>
-</div>
+</dl>
 <% }) %>
 
-<a href="/trainees/<%=trainee._id%>/edit">EDIT</a>
+<form action="/trainees/<%=trainee._id%>/edit">
+  <button>EDIT</button>
+</form>
 <form method="post" action="/trainees/<%=trainee._id%>?_method=DELETE">
   <button>DELETE</button>
 </form>

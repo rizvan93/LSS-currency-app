@@ -7,11 +7,11 @@
   <fieldset>
     <legend>Trainee Particulars</legend>
     <label
-      >Name:<input name="name" value="<%=trainee.name%>" required />*</label
-    >
+      >Name*:<input name="name" value="<%=trainee.name%>" required
+    /></label>
     <br />
     <label
-      >Date of Birth:<input
+      >Date of Birth*:<input
         name="dOB"
         value="<%=trainee.dOB%>"
         type="date"
@@ -19,22 +19,24 @@
     /></label>
     <br />
     <label
-      >Contact:
-      <input name="contact" value="<%=trainee.contact%>" required />*</label
+      >Contact*:
+      <input name="contact" value="<%=trainee.contact%>" required /></label
     ><br />
     <label
       >Vehicle Number: <input name="vehNum" value="<%=trainee.vehNum%>"
     /></label>
   </fieldset>
-  <% requirementNames.forEach((requirementName, index) => { %>
+
   <fieldset>
-    <legend><%=requirementName%></legend>
+    <legend>Last Attended Dates</legend>
+    <% requirementNames.forEach((requirementName, index) => { %>
     <label
-      >Last Attended: <input name="<%=requirementName%>" type="date"
+      ><%=requirementName%>*: <input name="<%=requirementName%>" type="date"
       value="<%=dayjs(trainee.currencies[index].lastAttended).format("YYYY-MM-DD")%>"
-      />*</label
+      /></label
     >
+    <br />
+    <%}) %>
   </fieldset>
-  <%}) %>
   <button>Update</button>
 </form>

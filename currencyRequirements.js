@@ -23,6 +23,20 @@ const findNextDue = {
 
 const names = Object.keys(findNextDue);
 
-const overallStatus = () => {};
+const overallStatus = (expiries) => {
+  names.forEach((name) => {
+    if (dayjs(expiries[name]).isAfter(dayjs(), "day")) {
+      return "EXPIRED";
+    }
+    if (
+      dayjs(expiries[name])
+        .add(3, "month")
+        .isAfter((dayjs(), "day"))
+    ) {
+      return "Recurrency due soon";
+    }
+  });
+  return "Current";
+};
 
 module.exports = { findNextDue, names, overallStatus };
