@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const requirements = require("../currencyRequirements");
 
-const requirementNames = requirements.keys;
+const requirementNames = Object.keys(requirements);
 
 const currencySchema = new Schema(
   {

@@ -19,16 +19,14 @@
       </td>
       <td>
         <% if (training._id.toString() === id) { %>
-        <form method="post" action="/bookings/?_method=DELETE">
+        <form method="post" action="/bookings/<%=training._id%>?_method=DELETE">
           <input name="traineeId" value="<%=traineeId%>" hidden />
-          <input name="trainingId" value="<%=training._id%>" hidden />
           <button>Delete Booking</button>
         </form>
         <%} else {%>
-        <form method="post" action="/bookings/?=method=PUT">
+        <form method="post" action="/bookings/<%=training._id%>?_method=PUT">
           <input name="traineeId" value="<%=traineeId%>" hidden />
           <input name="previousBooking" value="<%=id%>" hidden />
-          <input name="trainingId" value="<%=training._id%>" hidden />
           <button>Change Booking</button>
         </form>
         <%}%>

@@ -1,5 +1,4 @@
 const Training = require("../models/training");
-const Trainees = require("../models/trainee");
 const dayjs = require("dayjs");
 
 const newBooking = async (req, res) => {
@@ -25,8 +24,28 @@ const edit = async (req, res) => {
   res.render("bookings/edit", { trainings, traineeId, type, id, dayjs });
 };
 
+const update = (req, res) => {
+  const { id } = req.params;
+  const { traineeId, previousBooking } = req.body;
+  res.send(`Change ${previousBooking} to ${id} for ${traineeId}`);
+};
+
+const deleteBooking = async (req, res) => {
+  const { id } = req.params;
+  const { traineeId } = req.body;
+  const training = await Training.findById(id);
+
+  const index = training.trainees.indexOf(traineeId.toString());
+  training.trainees.splice(index, 1);
+
+  await training.save();
+  res.redirect("/trainees/" + traineeId);
+};
+
 module.exports = {
   new: newBooking,
   create,
   edit,
+  update,
+  delete: deleteBooking,
 };

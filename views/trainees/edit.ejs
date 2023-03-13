@@ -6,7 +6,14 @@
 <form method="post" action="/trainees">
   <fieldset>
     <legend>Trainee Particulars</legend>
-    <label>Name:<input name="name" value="<%=trainee.name%>" />*</label>
+    <label>Name:<input name="name" value="<%=trainee.name%>" />*</label> <br />
+    <label
+      >Contact:
+      <input name="contact" value="<%=trainee.contact%>" required />*</label
+    ><br />
+    <label
+      >Vehicle Number: <input name="vehNum" value="<%=trainee.vehNum%>"
+    /></label>
   </fieldset>
   <% requirementNames.forEach((requirementName, index) => { %>
   <fieldset>

@@ -1,6 +1,5 @@
 const Trainee = require("../models/trainee");
 const Training = require("../models/training");
-const mongoose = require("mongoose");
 const dayjs = require("dayjs");
 
 const requirements = require("../currencyRequirements");
@@ -8,7 +7,6 @@ const requirementNames = Object.keys(requirements);
 
 const seed = async (req, res) => {
   const trainings = await Training.find({});
-  const trainingId = trainings[0]._id;
   const newTrainee = {
     name: "trainee3",
     currencies: [
@@ -64,6 +62,8 @@ const newTrainee = (req, res) => {
 const create = async (req, res) => {
   const newTrainee = {};
   newTrainee.name = req.body.name.trim();
+  newTrainee.contact = req.body.contact;
+  newTrainee.vehNum = req.body.vehNum;
   newTrainee.currencies = [];
   requirementNames.forEach((requirementName) => {
     const currency = {
@@ -73,6 +73,7 @@ const create = async (req, res) => {
     newTrainee.currencies.push(currency);
   });
 
+  // res.send(JSON.stringify(newTrainee));
   await Trainee.create(newTrainee);
   res.redirect("/trainees");
 };
