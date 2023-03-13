@@ -5,10 +5,8 @@
   <table>
     <thead>
       <th>Type</th>
-
-      <th>Date</th>
-      <th>Start Time</th>
-      <th>End Time</th>
+      <th>Start</th>
+      <th>End</th>
       <th>Capacity</th>
       <th>Actions</th>
     </thead>
@@ -16,9 +14,8 @@
       <% trainings.forEach((training)=>{ %>
       <tr>
         <td><%= training.type %></td>
-        <td><%= dayjs(training.date).format("D-MMM-YY") %></td>
-        <td><%= training.startTime %></td>
-        <td><%= training.endTime %></td>
+        <td><%= dayjs(training.start).format("D-MMM-YY, HH:mm") %></td>
+        <td><%= dayjs(training.end).format("D-MMM-YY, HH:mm") %></td>
         <td><%= training.capacity %></td>
         <td><a href="/trainings/<%= training._id %>">Show Details</a></td>
       </tr>

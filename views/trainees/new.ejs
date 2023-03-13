@@ -4,7 +4,9 @@
 <form method="post" action="/trainees">
   <fieldset>
     <legend>Trainee Particulars</legend>
-    <label>Name:<input name="name" />*</label>
+    <label>Name:<input name="name" required />*</label> <br />
+    <label>Contact: <input name="contact" required />*</label><br />
+    <label>Vehicle Number: <input name="vehNum" /></label>
   </fieldset>
   <% requirementNames.forEach((requirementName) => { %>
   <fieldset>

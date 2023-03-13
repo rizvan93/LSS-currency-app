@@ -12,4 +12,7 @@ router.delete("/:id", traineeCtrl.delete);
 router.get("/:id/edit", traineeCtrl.edit);
 router.put("/id", traineeCtrl.update);
 
+router.get("/:traineeId/bookings/:type/new", traineeCtrl.newBooking);
+router.get("/:traineeId/bookings/:trainingId", traineeCtrl.book);
+
 module.exports = router;

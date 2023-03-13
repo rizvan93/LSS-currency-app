@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const requirements = require("../config/requirements");
+const requirements = require("../currencyRequirements");
 
 const requirementNames = Object.keys(requirements);
 
@@ -8,9 +8,10 @@ const trainingSchema = new Schema(
   {
     type: { type: String, required: true, enum: requirementNames },
     capacity: { type: Number, required: true, min: 1 },
-    date: { type: Date },
-    startTime: { type: String, match: /\d{2}:\d{2}/ },
-    endTime: { type: String, match: /\d{2}:\d{2}/ },
+    start: { type: Date, required: true },
+    end: { type: Date, required: true },
+    remarks: { type: String },
+    trainees: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Trainee" }],
   },
   { timestamps: true }
 );

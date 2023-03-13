@@ -1,11 +1,11 @@
 <%- include("../partials/header")%>
 <div>
   <h1><%= training.type %></h1>
-  <h4><%= dayjs(training.date).format("D-MMM-YY")%></h4>
-  <h4>Start: <%= training.startTime%>H</h4>
-  <h4>End: <%= training.endTime %>H</h4>
+  <h4>Start: <%= dayjs(training.start).format("D-MMM-YY, HH:mm")%></h4>
+  <h4>End: <%= dayjs(training.end).format("D-MMM-YY, HH:mm")%></h4>
   <h4>
-    Vacancies: <%=training.capacity - trainees.length%>/<%=training.capacity%>
+    Vacancies: <%=training.capacity -
+    training.trainees.length%>/<%=training.capacity%>
   </h4>
 </div>
 <a href="/trainings/<%= training._id %>/edit">Edit</a>
@@ -14,24 +14,27 @@
 </form>
 
 <div>
-  <% if (trainees.length) { %>
-  <h4>Attendees:</h4>
+  <h4>Trainees</h4>
   <table>
     <thead>
       <th>Name</th>
+      <th>Contact</th>
+      <th>Vehicle Number</th>
+      <th>Last Attended</th>
       <th>Actions</th>
     </thead>
     <tbody>
-      <% trainees.forEach((trainee) => { %>
+      <%training.trainees.forEach((trainee) => {%>
       <tr>
         <td><%=trainee.name%></td>
-        <td><a href="someupdate">Verify Completion</a></td>
+        <td><%=trainee.contact%></td>
+        <td><%=trainee.vehNum%></td>
+        <td><%=dayjs(trainee.lastAttended, "D-MMM-YY")%></td>
+        <td><a href="somelink">Verify Completion</a></td>
       </tr>
-      <% })%>
+      <%})%>
     </tbody>
   </table>
-  <% } else { %>
-  <h4>No Attendees</h4>
-  <% }%>
 </div>
+
 <%- include("../partials/footer")%>

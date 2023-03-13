@@ -1,17 +1,20 @@
 const Training = require("../models/training");
 const Trainees = require("../models/trainee");
 const dayjs = require("dayjs");
-const requirements = require("../config/requirements");
+const customParseFormat = require("dayjs/plugin/customParseFormat");
+dayjs.extend(customParseFormat);
+const requirements = require("../currencyRequirements");
 
 const requirementNames = Object.keys(requirements);
 
 const seed = async (req, res) => {
   const newTraining = {
     type: "req3",
-    capacity: 10,
-    date: Date(2023, 6, 8),
-    startTime: "1300",
-    endTime: "1500",
+    capacity: 15,
+    start: dayjs("15-07-2023, 09:00", "DD-MM-YYYY, HH:mm"),
+    end: dayjs("15-07-2023, 12:00", "DD-MM-YYYY, HH:mm"),
+    remarks: "",
+    trainees: ["640a8ccb261aa20ab037447d"],
   };
   try {
     await Training.create(newTraining);
@@ -28,12 +31,10 @@ const index = async (req, res) => {
 
 const show = async (req, res) => {
   const { id } = req.params;
-  const training = await Training.findById(id);
-  const trainees = await Trainees.find({
-    "currencies.nextBooked": id,
-  });
+  const training = await Training.findById(id).populate("trainees");
 
-  res.render("trainings/show", { training, trainees, dayjs });
+  console.log(training.trainees);
+  res.render("trainings/show", { training, dayjs });
   // res.send("show users: " + users);
 };
 
@@ -44,6 +45,14 @@ const newTraining = (req, res) => {
 
 const create = async (req, res) => {
   const newTraining = req.body;
+  newTraining.start = dayjs(
+    newTraining.startDate + " " + newTraining.startTime,
+    "YYYY-MM-DD HH:mm"
+  );
+  newTraining.end = dayjs(
+    newTraining.endDate + " " + newTraining.endTime,
+    "YYYY-MM-DD HH:mm"
+  );
   await Training.create(newTraining);
   res.redirect("/trainings");
 };

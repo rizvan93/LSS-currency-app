@@ -3,7 +3,7 @@ const Training = require("../models/training");
 const mongoose = require("mongoose");
 const dayjs = require("dayjs");
 
-const requirements = require("../config/requirements");
+const requirements = require("../currencyRequirements");
 const requirementNames = Object.keys(requirements);
 
 const seed = async (req, res) => {
@@ -20,7 +20,6 @@ const seed = async (req, res) => {
       {
         type: "req3",
         lastAttended: Date(2022, 2, 15),
-        nextBooked: "640a8b87150f7a7841914b77",
       },
     ],
   };
@@ -40,8 +39,20 @@ const index = async (req, res) => {
 const show = async (req, res) => {
   const { id } = req.params;
   const trainee = await Trainee.findById(id);
-  await trainee.populate({ path: "currencies.nextBooked" });
-  res.render("trainees/show", { trainee });
+  const nextBooked = {};
+  for (currency of trainee.currencies) {
+    const booking = await Training.findOne(
+      {
+        type: currency.type,
+        trainees: id,
+      },
+      "end"
+    );
+    if (booking) {
+      nextBooked[currency.type] = booking.end;
+    }
+  }
+  res.render("trainees/show", { trainee, nextBooked, dayjs });
   //   res.send("show trainee currency 2: " + "\n" + trainee.currencies[2]);
 };
 
@@ -85,6 +96,21 @@ const edit = async (req, res) => {
 
 const update = async (req, res) => {};
 
+const newBooking = async (req, res) => {
+  const { traineeId, type } = req.params;
+  const trainings = await Training.find({ type: type });
+
+  res.render("trainees/book", { trainings, traineeId, type, dayjs });
+};
+
+const book = async (req, res) => {
+  // res.send("confirm this booking");
+  const { traineeId, trainingId } = req.params;
+  const update = { $push: { trainees: traineeId } };
+  const updatedTraining = await Training.findByIdAndUpdate(trainingId, update);
+  res.redirect("/trainees/" + traineeId);
+};
+
 module.exports = {
   seed,
   index,
@@ -94,4 +120,6 @@ module.exports = {
   delete: deleteTrainee,
   edit,
   update,
+  newBooking,
+  book,
 };
