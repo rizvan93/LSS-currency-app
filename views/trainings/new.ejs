@@ -1,25 +1,38 @@
-<%- include("../partials/header")%>
+<%- include("../partials/header")%> <%- include("../partials/nav")%>
 
 <h1>Create New Session</h1>
 
 <form method="post" action="/trainings">
-<fieldset>
+  <fieldset>
     <legend>Details of new training session</legend>
-    <label>Type
-        <select name="type" required>
-            <option value="">Select an option</option>
-            <% requirementNames.forEach((requirementName)=>{ %>
-                <option value="<%= requirementName%>"><%= requirementName %></option>
-            <% }) %>
-        </select>
-    </label><br/>
-    <label>Start: <input name="startDate" type="date" required/> <input name="startTime" type="time" required/> </label> <br/>
-    <label>End: <input name="endDate" type="date" required> <input name="endTime" type="time" required/></label><br/>
-    <label>Capacity: <input name="capacity" type="number" required min="1" value="0"/> </label> <br/>
-    <label>Additional Instructions: <textarea name="remakrs" rows="5"></textarea> </label><br/>
-    <button method="post" action="/trainings" >Create</button>
-</fieldset>
-
+    <label
+      >Type
+      <select name="type" required>
+        <option value="">Select an option</option>
+        <% requirementNames.forEach((requirementName)=>{ %>
+        <option value="<%= requirementName%>"><%= requirementName %></option>
+        <% }) %>
+      </select> </label
+    ><br />
+    <label
+      >Start: <input name="startDate" type="date" required />
+      <input name="startTime" type="time" required />
+    </label>
+    <br />
+    <label
+      >End: <input name="endDate" type="date" required />
+      <input name="endTime" type="time" required /></label
+    ><br />
+    <label
+      >Capacity:
+      <input name="capacity" type="number" required min="1" value="0" />
+    </label>
+    <br />
+    <label
+      >Additional Instructions:
+      <textarea name="remakrs" rows="5"></textarea></label
+    ><br />
+    <button method="post" action="/trainings">Create</button>
+  </fieldset>
 </form>
-  <%- include("../partials/footer")%>
-</a>
+<%- include("../partials/footer")%>

@@ -6,7 +6,7 @@ const isAuth = (accounts) => {
       console.log("isAuth failed");
       console.log(`searching for ${req.session.account} within`);
       console.log(accounts);
-      res.redirect(403, "/");
+      res.redirect(403, req.session.home);
     }
   };
 };
@@ -18,7 +18,7 @@ const isTrainee = (req, res, next) => {
       next();
     } else {
       console.log("isTrainee failed");
-      res.redirect(403, "/");
+      res.redirect(403, req.session.home);
     }
   } else {
     next();

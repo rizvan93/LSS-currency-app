@@ -60,15 +60,15 @@ const authenticate = async (req, res) => {
         req.session.traineeId = user.traineeId;
         homes.trainee = homes.trainee + user.traineeId.toString();
       }
+      req.session.home = homes[req.session.account];
 
-      res.redirect(homes[req.session.account]);
+      res.redirect(req.session.home);
     }
   });
 };
 
 const index = async (req, res) => {
   const users = await User.find({});
-  // res.render("homepage for admins, " + JSON.stringify(users));
   res.render("users/index", { users });
 };
 
