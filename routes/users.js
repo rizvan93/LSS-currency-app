@@ -8,6 +8,7 @@ router.get("/seed/:traineeId", userCtrl.seedTrainee);
 
 router.get("/", userCtrl.login);
 router.post("/", userCtrl.authenticate);
+router.get("/logout", userCtrl.logout);
 
 router.get("/users", isAuth(["admin"]), userCtrl.index);
 

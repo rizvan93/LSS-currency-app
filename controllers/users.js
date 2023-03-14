@@ -3,6 +3,33 @@ const bcrypt = require("bcrypt");
 
 const saltRounds = 10;
 
+const seedAdmin = (req, res) => {
+  const newUser = {};
+  newUser.userId = "trainer";
+  newUser.account = "trainer";
+  const password = "password";
+  bcrypt.hash(password, saltRounds, async (err, hash) => {
+    newUser.password = await hash;
+    await User.create(newUser);
+    res.send("user created: " + JSON.stringify(newUser));
+  });
+};
+
+const seedTrainee = (req, res) => {
+  const { traineeId } = req.params;
+  const newUser = {};
+  newUser.userId = "trainee2";
+  newUser.account = "trainee";
+  newUser.traineeId = traineeId;
+
+  const password = "password";
+  bcrypt.hash(password, saltRounds, async (err, hash) => {
+    newUser.password = await hash;
+    await User.create(newUser);
+    res.send("user created: " + JSON.stringify(newUser));
+  });
+};
+
 const homes = {
   admin: "/users",
   traineeAdmin: "/trainees",
@@ -45,37 +72,18 @@ const index = async (req, res) => {
   res.render("users/index", { users });
 };
 
-const seedAdmin = (req, res) => {
-  const newUser = {};
-  newUser.userId = "trainer";
-  newUser.account = "trainer";
-  const password = "password";
-  bcrypt.hash(password, saltRounds, async (err, hash) => {
-    newUser.password = await hash;
-    await User.create(newUser);
-    res.send("user created: " + JSON.stringify(newUser));
-  });
-};
-
-const seedTrainee = (req, res) => {
-  const { traineeId } = req.params;
-  const newUser = {};
-  newUser.userId = "trainee2";
-  newUser.account = "trainee";
-  newUser.traineeId = traineeId;
-
-  const password = "password";
-  bcrypt.hash(password, saltRounds, async (err, hash) => {
-    newUser.password = await hash;
-    await User.create(newUser);
-    res.send("user created: " + JSON.stringify(newUser));
-  });
+const logout = (req, res) => {
+  if (req.session) {
+    req.session.destroy();
+  }
+  res.redirect("/");
 };
 
 module.exports = {
   index,
   login,
   authenticate,
+  logout,
   seedAdmin,
   seedTrainee,
 };
