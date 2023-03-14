@@ -1,0 +1,48 @@
+<fieldset>
+  <legend>Trainee Particulars</legend>
+  <label
+    >Name*: <% if (trainee.name) {%>
+    <input name="name" value="<%=trainee.name%>" required />
+    <% } else { %>
+    <input name="name" required />
+    <% } %>
+  </label>
+
+  <label
+    >Date of Birth*: <% if (trainee.dOB) {%> <input name="dOB"
+    value="<%=dayjs(trainee.dOB).format("YYYY-MM-DD")%>" type="date" required />
+    <% } else { %>
+    <input name="dOB" type="date" required />
+    <% } %></label
+  ><br />
+
+  <label
+    >Contact*: <% if (trainee.contact) { %>
+    <input name="contact" value="<%=trainee.contact%>" required />
+    <% } else { %>
+    <input name="contact" required />
+    <% } %>
+  </label>
+
+  <label
+    >Vehicle Number: <% if (trainee.vehNum) { %>
+    <input name="vehNum" value="<%=trainee.vehNum%>" /> <% } else { %>
+    <input name="vehNum" />
+    <%}%>
+  </label>
+</fieldset>
+
+<fieldset>
+  <legend>Last Attended Dates</legend>
+  <% requirementNames.forEach((requirementName, index) => { %>
+  <label
+    ><%= requirementName %>*: <% if (trainee.currencies &&
+    trainee.currencies.find(currency => currency.type === requirementName)) { %>
+    <input name="<%=requirementName%>" type="date"
+    value="<%=dayjs(trainee.currencies.find(currency => currency.type ===
+    requirementName).lastAttended).format("YYYY-MM-DD")%>" required /><% } else
+    { %> <input name="<%=requirementName%>" type="date" /> <% } %></label
+  >
+  <br />
+  <%}) %>
+</fieldset>

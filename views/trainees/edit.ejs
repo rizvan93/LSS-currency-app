@@ -4,37 +4,7 @@
 <p><%=message%></p>
 
 <form method="post" action="/trainees/<%=trainee._id%>?_method=PUT">
-  <fieldset>
-    <legend>Trainee Particulars</legend>
-    <label
-      >Name*:<input name="name" value="<%=trainee.name%>" required
-    /></label>
-    <br />
-    <label
-      >Date of Birth*:<input name="dOB"
-      value="<%=dayjs(trainee.dOB).format("YYYY-MM-DD")%>" type="date" required
-      /></label
-    >
-    <br />
-    <label
-      >Contact*:
-      <input name="contact" value="<%=trainee.contact%>" required /></label
-    ><br />
-    <label
-      >Vehicle Number: <input name="vehNum" value="<%=trainee.vehNum%>"
-    /></label>
-  </fieldset>
-
-  <fieldset>
-    <legend>Last Attended Dates</legend>
-    <% requirementNames.forEach((requirementName, index) => { %>
-    <label
-      ><%=requirementName%>*: <input name="<%=requirementName%>" type="date"
-      value="<%=dayjs(trainee.currencies[index].lastAttended).format("YYYY-MM-DD")%>"
-      required /></label
-    >
-    <br />
-    <%}) %>
-  </fieldset>
+  <%- include("./partials/traineeFieldset", { requirementNames, trainee, dayjs
+  })%>
   <button>Update</button>
 </form>
