@@ -62,8 +62,9 @@ const newTrainee = (req, res) => {
 
 const create = async (req, res) => {
   const users = await User.find({}, "userId");
+  const userIds = users.map((user) => user.userId);
   const { userId, password, confirmPassword } = req.body;
-  if (users.includes(userId)) {
+  if (userIds.includes(userId)) {
     res.render("/trainees/new", {
       requirementNames,
       message: "Username already taken",

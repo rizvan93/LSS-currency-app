@@ -11,5 +11,7 @@ router.post("/", userCtrl.authenticate);
 router.get("/logout", userCtrl.logout);
 
 router.get("/users", isAuth(["admin"]), userCtrl.index);
+router.get("/users/new", isAuth(["admin"]), userCtrl.new);
+router.post("/users", isAuth(["admin"]), userCtrl.create);
 
 module.exports = router;

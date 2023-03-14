@@ -67,11 +67,6 @@ const authenticate = async (req, res) => {
   });
 };
 
-const index = async (req, res) => {
-  const users = await User.find({});
-  res.render("users/index", { users });
-};
-
 const logout = (req, res) => {
   if (req.session) {
     req.session.destroy();
@@ -79,11 +74,48 @@ const logout = (req, res) => {
   res.redirect("/");
 };
 
+const index = async (req, res) => {
+  const users = await User.find({});
+  res.render("users/index", { users });
+};
+
+const newUser = (req, res) => {
+  res.render("users/new", { message: "" });
+};
+
+const create = async (req, res) => {
+  const { userId, password, confirmPassword } = req.body;
+  const users = await User.find({}, "userId");
+  const userIds = users.map((user) => user.userId);
+  // res.send(JSON.stringify(userIds));
+  console.log(userIds);
+  console.log(userId);
+
+  if (userIds.includes(userId)) {
+    res.render("users/new", {
+      message: "Username already taken",
+    });
+    return;
+  }
+  if (password !== confirmPassword) {
+    res.render("users/new", {
+      message: "Passwords do not match",
+    });
+    return;
+  }
+
+  await User.create(req.body);
+
+  res.redirect("/users");
+};
+
 module.exports = {
-  index,
   login,
   authenticate,
   logout,
+  index,
+  new: newUser,
+  create,
   seedAdmin,
   seedTrainee,
 };

@@ -1,0 +1,19 @@
+<%- include("../partials/header")%> <%- include("../partials/nav")%>
+
+<h1>Add New Non-Trainee User</h1>
+<p><%=message%></p>
+<form method="post" action="/users">
+  <label
+    >Account Type*:
+    <select name="account" required>
+      <option value="">Select an option</option>
+      <option value="admin">Administrator</option>
+      <option value="traineeAdmin">Trainee Administrator</option>
+      <option value="trainer">Trainer</option>
+    </select></label
+  >
+  <%-include("./partials/loginFieldset")%>
+  <button>Add</button>
+</form>
+
+<%- include("../partials/footer")%>
