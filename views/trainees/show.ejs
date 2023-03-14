@@ -1,6 +1,6 @@
 <%- include("../partials/header")%>
 <h1><%= trainee.name %></h1>
-<h3><%=status%></h3>
+<h3 class="<%=status.class%>"><%=status.message%></h3>
 <p>Contact: <%=trainee.contact%></p>
 <p>Vehicle Number: <%=trainee.vehNo%></p>
 
@@ -11,7 +11,9 @@
   <dd>Expires: <%= dayjs(expiries[currency.type]).format("D MMM YY") %></dd>
   <% if (nextBooked[currency.type]) {%>
   <dd>
-    Next Booking: <%= dayjs(nextBooked[currency.type].end).format("D MMM YY")%>
+    <a href="/trainings/<%=nextBooked[currency.type]._id%>"
+      >Booked: <%=dayjs(nextBooked[currency.type].end).format("D MMM YY")%></a
+    >
   </dd>
   <dd>
     <a href="/bookings/edit/<%=nextBooked[currency.type]._id%>/<%=trainee._id%>"
@@ -20,9 +22,7 @@
   </dd>
   <%} else {%>
   <dd>
-    <a href="/bookings/new/<%=trainee._id%>/<%=currency.type%>/"
-      >Make New Booking</a
-    >
+    <a href="/bookings/new/<%=trainee._id%>/<%=currency.type%>/">Book</a>
   </dd>
   <%}%>
 </dl>

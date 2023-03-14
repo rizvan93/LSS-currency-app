@@ -1,15 +1,44 @@
 const express = require("express");
 const router = express.Router();
 const trainingsCtrl = require("../controllers/trainings");
+const { isAuth } = require("../controllers/isAuth");
 
 router.get("/seed", trainingsCtrl.seed);
 
-router.get("/", trainingsCtrl.index);
-router.get("/new", trainingsCtrl.new);
-router.get("/:id", trainingsCtrl.show);
-router.get("/:id/edit", trainingsCtrl.edit);
-router.post("/", trainingsCtrl.create);
-router.put("/:id", trainingsCtrl.update);
-router.delete("/:id", trainingsCtrl.delete);
+router.get(
+  "/",
+  isAuth(["admin", "traineeAdmin", "trainer"]),
+  trainingsCtrl.index
+);
+router.get(
+  "/new",
+  isAuth(["admin", "traineeAdmin", "trainer"]),
+  trainingsCtrl.new
+);
+router.get(
+  "/:trainingId",
+  isAuth(["admin", "traineeAdmin", "trainer"]),
+  trainingsCtrl.show
+);
+router.get(
+  "/:trainingId/edit",
+  isAuth(["admin", "traineeAdmin", "trainer"]),
+  trainingsCtrl.edit
+);
+router.post(
+  "/",
+  isAuth(["admin", "traineeAdmin", "trainer"]),
+  trainingsCtrl.create
+);
+router.put(
+  "/:trainingId",
+  isAuth(["admin", "traineeAdmin", "trainer"]),
+  trainingsCtrl.update
+);
+router.delete(
+  "/:trainingId",
+  isAuth(["admin", "traineeAdmin", "trainer"]),
+  trainingsCtrl.delete
+);
 
 module.exports = router;

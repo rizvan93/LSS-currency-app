@@ -27,8 +27,8 @@ const index = async (req, res) => {
 };
 
 const show = async (req, res) => {
-  const { id } = req.params;
-  const training = await Training.findById(id).populate("trainees");
+  const { trainingId } = req.params;
+  const training = await Training.findById(trainingId).populate("trainees");
 
   console.log(training.trainees);
   res.render("trainings/show", { training, dayjs });
@@ -55,8 +55,8 @@ const create = async (req, res) => {
 };
 
 const edit = async (req, res) => {
-  const { id } = req.params;
-  res.send("edit this document: " + id);
+  const { trainingId } = req.params;
+  res.send("edit this document: " + trainingId);
 };
 
 const update = async (req, res) => {
@@ -64,8 +64,8 @@ const update = async (req, res) => {
 };
 
 const deleteTraining = async (req, res) => {
-  const { id } = req.params;
-  await Training.findByIdAndDelete(id);
+  const { trainingId } = req.params;
+  await Training.findByIdAndDelete(trainingId);
   res.redirect("/trainings");
 };
 

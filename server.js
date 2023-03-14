@@ -4,10 +4,11 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const methodOverride = require("method-override");
+const session = require("express-session");
 require("dotenv").config();
 require("./config/database");
 
-const indexRouter = require("./routes/index");
+const usersRouter = require("./routes/users");
 const traineesRouter = require("./routes/trainees");
 const trainingsRouter = require("./routes/trainings");
 const bookingsRouter = require("./routes/bookings");
@@ -24,8 +25,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(methodOverride("_method"));
+app.use(
+  session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
-app.use("/", indexRouter);
+app.use("/", usersRouter);
 app.use("/trainees", traineesRouter);
 app.use("/trainings", trainingsRouter);
 app.use("/bookings", bookingsRouter);

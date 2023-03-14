@@ -1,31 +1,24 @@
 const Trainee = require("../models/trainee");
 const Training = require("../models/training");
+const User = require("../models/user");
 const dayjs = require("dayjs");
 
 const requirements = require("../currencyRequirements");
 
-const seed = async (req, res) => {
-  const trainings = await Training.find({});
-  const newTrainee = {
-    name: "trainee3",
-    currencies: [
-      {
-        type: "req1",
-        lastAttended: Date(2023, 10, 25),
-      },
-      { type: "req2", lastAttended: Date(2023, 01, 12) },
-      {
-        type: "req3",
-        lastAttended: Date(2022, 2, 15),
-      },
-    ],
-  };
-  try {
-    await Trainee.create(newTrainee);
-    res.send(JSON.stringify(newTrainee) + " created");
-  } catch (error) {
-    res.send("Unable to create trainee" + error);
-  }
+const fillTraineeFromBody = (newTrainee, body) => {
+  newTrainee.name = body.name.trim();
+  newTrainee.dOB = body.dOB;
+  newTrainee.contact = body.contact;
+  newTrainee.vehNum = body.vehNum;
+  newTrainee.currencies = [];
+  requirements.names.forEach((name) => {
+    const currency = {
+      type: name,
+      lastAttended: body[name],
+    };
+    newTrainee.currencies.push(currency);
+  });
+  return newTrainee;
 };
 
 const index = async (req, res) => {
@@ -34,15 +27,15 @@ const index = async (req, res) => {
 };
 
 const show = async (req, res) => {
-  const { id } = req.params;
-  const trainee = await Trainee.findById(id);
+  const { traineeId } = req.params;
+  const trainee = await Trainee.findById(traineeId);
   const nextBooked = {};
   const expiries = {};
   for (currency of trainee.currencies) {
     const booking = await Training.findOne(
       {
         type: currency.type,
-        trainees: id,
+        trainees: traineeId,
       },
       "end"
     );
@@ -68,34 +61,47 @@ const newTrainee = (req, res) => {
 };
 
 const create = async (req, res) => {
-  const newTrainee = {};
-  newTrainee.name = req.body.name.trim();
-  newTrainee.dOB = req.body.dOB;
-  newTrainee.contact = req.body.contact;
-  newTrainee.vehNum = req.body.vehNum;
-  newTrainee.currencies = [];
-  requirements.names.forEach((name) => {
-    const currency = {
-      type: name,
-      lastAttended: req.body[name],
-    };
-    newTrainee.currencies.push(currency);
-  });
+  const users = await User.find({}, "userId");
+  const { userId, password, confirmPassword } = req.body;
+  if (users.includes(userId)) {
+    res.render("/trainees/new", {
+      requirementNames,
+      message: "Username already taken",
+    });
+  } else {
+    if (password !== confirmPassword) {
+      res.render("/trainees/new", {
+        requirementNames,
+        message: "Passwords must match",
+      });
+    } else {
+      const newUser = {
+        userId: req.body.userId,
+        password: req.body.password,
+        account: "trainee",
+      };
 
-  // res.send(JSON.stringify(newTrainee));
-  await Trainee.create(newTrainee);
-  res.redirect("/trainees");
+      const newTrainee = {};
+      const trainee = await Trainee.create(
+        fillTraineeFromBody(newTrainee, req.body)
+      );
+
+      newUser.traineeId = trainee._id;
+      await User.create(newUser);
+      res.redirect("/trainees");
+    }
+  }
 };
 
 const deleteTrainee = async (req, res) => {
-  const { id } = req.params;
-  await Trainee.findByIdAndDelete(id);
+  const { traineeId } = req.params;
+  await Trainee.findByIdAndDelete(traineeId);
   res.redirect("/trainees");
 };
 
 const edit = async (req, res) => {
-  const { id } = req.params;
-  const trainee = await Trainee.findById(id);
+  const { traineeId } = req.params;
+  const trainee = await Trainee.findById(traineeId);
   //   res.send(JSON.stringify(trainee));
   const requirementNames = requirements.names;
   res.render("trainees/edit", {
@@ -107,8 +113,8 @@ const edit = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  const { id } = req.params;
-  const trainee = await Trainee.findById(id);
+  const { traineeId } = req.params;
+  const trainee = await Trainee.findById(traineeId);
 
   trainee.name = req.body.name;
   trainee.dOB = req.body.dOB;
@@ -128,7 +134,6 @@ const update = async (req, res) => {
 };
 
 module.exports = {
-  seed,
   index,
   show,
   new: newTrainee,

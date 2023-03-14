@@ -1,0 +1,37 @@
+<%- include("../partials/header")%>
+
+<h1>Currency Tracker Users Index</h1>
+
+<nav>
+  Add User:
+  <a>Non-Trainee</a>
+  <a href="/trainees/new">Trainee</a>
+</nav>
+
+<table>
+  <thead>
+    <th>Username</th>
+    <th>Account Type</th>
+    <th>Actions</th>
+  </thead>
+  <tbody>
+    <% users.forEach((user) => {%>
+    <tr>
+      <td><%=user.userId%></td>
+      <td>
+        <% if (user.account === "trainee") {%>
+        <a href="/trainees/<%=user.traineeId%>">Trainee</a> <%} else {%>
+        <%=user.account%> <%}%>
+      </td>
+      <td>
+        <form>
+          <button>DELETE</button>
+        </form>
+      </td>
+    </tr>
+
+    <%})%>
+  </tbody>
+</table>
+
+<%- include("../partials/footer")%>

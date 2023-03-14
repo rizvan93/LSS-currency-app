@@ -1,15 +1,39 @@
 var express = require("express");
 var router = express.Router();
 const traineeCtrl = require("../controllers/trainees");
+const { isAuth, isTrainee } = require("../controllers/isAuth");
 
-router.get("/seed", traineeCtrl.seed);
+router.get("/", isAuth(["admin", "traineeAdmin"]), traineeCtrl.index);
 
-router.get("/", traineeCtrl.index);
-router.get("/new", traineeCtrl.new);
-router.get("/:id", traineeCtrl.show);
-router.post("/", traineeCtrl.create);
-router.delete("/:id", traineeCtrl.delete);
-router.get("/:id/edit", traineeCtrl.edit);
-router.put("/:id", traineeCtrl.update);
+router.get("/new", isAuth(["admin", "traineeAdmin"]), traineeCtrl.new);
+
+router.get(
+  "/:traineeId",
+  isAuth(["admin", "traineeAdmin", "trainee"]),
+  isTrainee,
+  traineeCtrl.show
+);
+
+router.post("/", isAuth(["admin", "traineeAdmin"]), traineeCtrl.create);
+
+router.delete(
+  "/:traineeId",
+  isAuth(["admin", "traineeAdmin"]),
+  traineeCtrl.delete
+);
+
+router.get(
+  "/:traineeId/edit",
+  isAuth(["admin", "traineeAdmin", "trainee"]),
+  isTrainee,
+  traineeCtrl.edit
+);
+
+router.put(
+  "/:traineeId",
+  isAuth(["admin", "traineeAdmin"]),
+  isTrainee,
+  traineeCtrl.update
+);
 
 module.exports = router;

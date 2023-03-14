@@ -37,7 +37,7 @@ const overallStatus = (expiries) => {
     // console.log(`${name} expires on ${expiries[name]}. expired: ${expired}`);
 
     if (expired) {
-      return "EXPIRED";
+      return { message: "EXPIRED", class: "warnHigh" };
     }
   }
 
@@ -46,11 +46,11 @@ const overallStatus = (expiries) => {
     // console.log(`due soon: ${dueSoon}`);
 
     if (dueSoon) {
-      return "Recurrency due soon";
+      return { message: "Recurrency due soon", class: "warnLow" };
     }
   }
 
-  return "Current";
+  return { message: "Current", class: "warnNone" };
 };
 
 module.exports = { findNextDue, names, overallStatus };

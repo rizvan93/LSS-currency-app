@@ -1,0 +1,16 @@
+<%- include("../partials/header")%>
+
+<h1>Login to Currency Tracker</h1>
+<% if (message) { %>
+<p class="warnHigh"><%=message%></p>
+<%}%>
+<form method="post">
+  <fieldset>
+    <legend>Enter your login credentials:</legend>
+    <label>Username: <input name="userId" required /></label> <br />
+    <label>Password: <input name="password" required type="password" /></label>
+  </fieldset>
+  <button>Login</button>
+</form>
+
+<%- include("../partials/footer")%>
