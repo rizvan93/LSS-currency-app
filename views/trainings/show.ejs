@@ -27,24 +27,25 @@
       <th>Name</th>
       <th>Contact</th>
       <th>Vehicle Number</th>
-      <th>Last Attended</th>
+      <th>Expiry</th>
       <th>Completed</th>
     </thead>
     <form>
       <tbody>
-        <%training.trainees.forEach((trainee) => {%>
+        <% training.trainees.forEach((trainee) => { %>
         <tr>
-          <td><%=trainee.name%></td>
-          <td><%=trainee.contact%></td>
-          <td><%=trainee.vehNum%></td>
-          <td><%=dayjs(trainee.lastAttended, "D-MMM-YY")%></td>
+          <td><%= trainee.name %></td>
+          <td><%= trainee.contact %></td>
+          <td><%= trainee.vehNum %></td>
+          <td><%= dayjs(trainee.currencies.find(currency => currency.type === training.type).expiry).format("D MMM YY") %></td>
           <td><input name="trainee._id" type="checkbox"/></a></td>
         </tr>
-        <%})%>
+        <% }) %>
       </tbody>
     </table>
     <button>Update Attendance</button>
   </form>
 </div>
 <%}%>
+
 <%- include("../partials/footer")%>

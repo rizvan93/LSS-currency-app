@@ -4,7 +4,7 @@
 <p><%=message%></p>
 
 <form method="post" action="/trainees/<%=trainee._id%>?_method=PUT">
-  <%- include("./partials/traineeFieldset", { requirementNames, trainee, dayjs
+  <%- include("../partials/traineeFieldset", { requirementNames, trainee, dayjs
   })%>
   <button>Update</button>
 </form>

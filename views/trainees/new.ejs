@@ -2,7 +2,7 @@
 <h1>Add New Trainee</h1>
 <p><%=message%></p>
 <form method="post" action="/trainees">
-  <%- include("../users/partials/loginFieldset")%> <%-
-  include("./partials/traineeFieldset", { requirementNames, trainee: {} })%>
+  <%- include("../partials/loginFieldset")%> <%-
+  include("../partials/traineeFieldset", { requirementNames, trainee: {} })%>
   <button>Add</button>
 </form>
