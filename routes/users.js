@@ -13,5 +13,6 @@ router.get("/logout", userCtrl.logout);
 router.get("/users", isAuth(["admin"]), userCtrl.index);
 router.get("/users/new", isAuth(["admin"]), userCtrl.new);
 router.post("/users", isAuth(["admin"]), userCtrl.create);
+router.delete("/users/:id", isAuth(["admin"]), userCtrl.delete);
 
 module.exports = router;

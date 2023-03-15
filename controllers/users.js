@@ -110,6 +110,13 @@ const create = async (req, res) => {
   res.redirect("/users");
 };
 
+const deleteUser = async (req, res) => {
+  const { id } = req.params;
+  await User.findByIdAndDelete(id);
+
+  res.redirect("/users");
+};
+
 module.exports = {
   login,
   authenticate,
@@ -117,6 +124,7 @@ module.exports = {
   index,
   new: newUser,
   create,
+  delete: deleteUser,
   seedAdmin,
   seedTrainee,
 };
