@@ -1,49 +1,108 @@
 const dayjs = require("dayjs");
+const isSameOrBefore = require("dayjs/plugin/isSameOrBefore");
+dayjs.extend(isSameOrBefore);
 
-const findNextDue = {
-  ACE: (lastAttended, dOB) => {
-    const thisYear = dayjs().year();
-    const thisBirthday = dayjs(dOB).year(thisYear);
-    const lastBirthday = thisBirthday.subtract(1, "year");
-
-    if (dayjs(lastAttended).add(2, "month").isBefore(thisBirthday)) {
-      return thisBirthday.add(1, "month");
-    } else {
-      return lastBirthday.add(1, "month");
-    }
+const nextExpiries = {
+  ACE: (expiry, lastAttended) => {
+    const reattemptPeriod = 3; //months
+    const validityExtension = 1; //years
+    return getNextExpiry(
+      expiry,
+      lastAttended,
+      reattemptPeriod,
+      validityExtension
+    );
   },
-  APT: (lastAttended) => {
-    return dayjs(lastAttended).add(3, "year").endOf("month");
+  APT: (expiry, lastAttended) => {
+    const reattemptPeriod = 0; //months
+    const validityExtension = 3; //years
+    return getNextExpiry(
+      expiry,
+      lastAttended,
+      reattemptPeriod,
+      validityExtension
+    );
   },
-  "NVG Refresher": (lastAttended) => {
-    return dayjs(lastAttended).add(3, "year").endOf("month");
+  "NVG Refresher": (expiry, lastAttended) => {
+    const reattemptPeriod = 0; //months
+    const validityExtension = 3; //years
+    return getNextExpiry(
+      expiry,
+      lastAttended,
+      reattemptPeriod,
+      validityExtension
+    );
   },
-  YOGA: (lastAttended) => {
-    return dayjs(lastAttended).add(1, "year").endOf("month");
+  "DFS YOGA": (expiry, lastAttended) => {
+    const reattemptPeriod = 0; //months
+    const validityExtension = 1; //years
+    return getNextExpiry(
+      expiry,
+      lastAttended,
+      reattemptPeriod,
+      validityExtension
+    );
   },
-  "Survival Refresher Videos": (lastAttended) => {
-    return dayjs(lastAttended).add(1, "year").endOf("month");
+  "DFS Refresher": (expiry, lastAttended) => {
+    const reattemptPeriod = 0; //months
+    const validityExtension = 3; //years
+    return getNextExpiry(
+      expiry,
+      lastAttended,
+      reattemptPeriod,
+      validityExtension
+    );
   },
-  "Dinghy Drill & Ejection Seat Trainer": (lastAttended) => {
-    return dayjs(lastAttended).add(2, "year").endOf("month");
+  "Survival Refresher Videos": (expiry, lastAttended) => {
+    const reattemptPeriod = 0; //months
+    const validityExtension = 1; //years
+    return getNextExpiry(
+      expiry,
+      lastAttended,
+      reattemptPeriod,
+      validityExtension
+    );
+  },
+  "Dinghy Drill & Ejection Seat Trainer": (expiry, lastAttended) => {
+    const reattemptPeriod = 0; //months
+    const validityExtension = 2; //years
+    return getNextExpiry(
+      expiry,
+      lastAttended,
+      reattemptPeriod,
+      validityExtension
+    );
   },
 };
 
-const names = Object.keys(findNextDue);
+const names = Object.keys(nextExpiries);
 
-const overallStatus = (expiries) => {
-  for (const name in expiries) {
-    const expired = dayjs().isAfter(dayjs(expiries[name]), "day");
-    // console.log(`${name} expires on ${expiries[name]}. expired: ${expired}`);
+const status = (expiry) => {
+  const expired = dayjs().isAfter(dayjs(expiry), "day");
+  const dueSoon = dayjs().add(3, "month").isAfter(dayjs(expiry));
+
+  if (expired) {
+    return "warnHigh";
+  } else if (dueSoon) {
+    return "warnLow";
+  } else {
+    return "warnNone";
+  }
+};
+
+const getOverallStatus = (trainee) => {
+  const expiries = trainee.currencies.map((currency) => currency.expiry);
+
+  for (const expiry in expiries) {
+    const expired = dayjs().isAfter(dayjs(expiry), "day");
 
     if (expired) {
       return { message: "EXPIRED", class: "warnHigh" };
     }
   }
 
-  for (const name in expiries) {
-    const dueSoon = dayjs().add(3, "month").isAfter(dayjs(expiries[name]));
-    // console.log(`due soon: ${dueSoon}`);
+  for (const expiry in expiries) {
+    const dueSoon = dayjs().add(3, "month").isAfter(dayjs(expiry));
 
     if (dueSoon) {
       return { message: "Recurrency due soon", class: "warnLow" };
@@ -53,4 +112,22 @@ const overallStatus = (expiries) => {
   return { message: "Current", class: "warnNone" };
 };
 
-module.exports = { findNextDue, names, overallStatus };
+const getNextExpiry = (
+  expiry,
+  lastAttended,
+  reattemptPeriod,
+  validityExtension
+) => {
+  const attemptedBeforeExpiry =
+    dayjs(lastAttended).isSameOrBefore(dayjs(expiry), "day") &&
+    dayjs(expiry)
+      .subtract(reattemptPeriod, "months")
+      .isSameOrBefore(dayjs(lastAttended), "day");
+  if (attemptedBeforeExpiry) {
+    return dayjs(expiry).add(validityExtension, "year").endOf("month");
+  } else {
+    return lastAttended;
+  }
+};
+
+module.exports = { nextExpiries, names, status, getOverallStatus };

@@ -9,6 +9,14 @@
   </label>
 
   <label
+    >Seniority*:
+    <select name="seniority" required>
+      <option value="Junior" <% if (trainee.seniority === "Junior") { %> selected <% } %> >Junior</option>
+      <option value="Senior" <% if (trainee.seniority === "Senior") { %> selected <% } %> >Senior</option>
+    </select>
+  </label>
+
+  <label
     >Date of Birth*: <% if (trainee.dOB) {%> <input name="dOB"
     value="<%=dayjs(trainee.dOB).format("YYYY-MM-DD")%>" type="date" required />
     <% } else { %>
@@ -33,15 +41,15 @@
 </fieldset>
 
 <fieldset>
-  <legend>Last Attended Dates</legend>
+  <legend>Currency Expiry Dates</legend>
   <% requirementNames.forEach((requirementName, index) => { %>
   <label
     ><%= requirementName %>*: <% if (trainee.currencies &&
     trainee.currencies.find(currency => currency.type === requirementName)) { %>
     <input name="<%=requirementName%>" type="date"
     value="<%=dayjs(trainee.currencies.find(currency => currency.type ===
-    requirementName).lastAttended).format("YYYY-MM-DD")%>" required /><% } else
-    { %> <input name="<%=requirementName%>" type="date" /> <% } %></label
+    requirementName).expiry).format("YYYY-MM-DD")%>" required /><% } else { %>
+    <input name="<%=requirementName%>" type="date" /> <% } %></label
   >
   <br />
   <%}) %>

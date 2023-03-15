@@ -4,18 +4,21 @@
   <a href="/trainees/new">Add New Trainee</a>
   <thead>
     <th>Name</th>
+    <th>Seniority</th>
     <th>Status</th>
     <th>Actions</th>
   </thead>
   <tbody>
-    <% trainees.forEach((trainee)=>{ %>
+    <% trainees.forEach((trainee)=>{ %> <% const status =
+    getOverallStatus(trainee)%>
     <tr>
       <td><%= trainee.name %></td>
-      <td>some status</td>
-      <td><a href="/trainees/<%=trainee._id%>">Show Details</a></td>
+      <td><%= trainee.seniority %></td>
+      <td class="<%=status.class%>"><%= status.message %></td>
+      <td><a href="/trainees/<%= trainee._id %>">Show Details</a></td>
     </tr>
 
-    <% })%>
+    <% }) %>
   </tbody>
 </table>
 

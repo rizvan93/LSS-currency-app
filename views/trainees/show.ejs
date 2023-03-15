@@ -1,15 +1,17 @@
 <%- include("../partials/header")%> <%- include("../partials/nav")%>
 
 <h1><%= trainee.name %></h1>
-<h3 class="<%=status.class%>"><%=status.message%></h3>
+<h3 class="<%=overallStatus.class%>"><%=overallStatus.message%></h3>
+<p><%=trainee.seniority%> Aircrew</p>
 <p>Contact: <%=trainee.contact%></p>
 <p>Vehicle Number: <%=trainee.vehNo%></p>
 
 <% trainee.currencies.forEach((currency)=>{ %>
 <dl>
   <dt><b><%= currency.type%></b></dt>
-  <dd>Last Attended: <%= dayjs(currency.lastAttended).format("D MMM YY") %></dd>
-  <dd>Expires: <%= dayjs(expiries[currency.type]).format("D MMM YY") %></dd>
+  <dd class="<%=statuses[currency.type]%>">
+    Expires: <%=dayjs(currency.expiry).format("D MMM YY")%>
+  </dd>
   <% if (nextBooked[currency.type]) {%>
   <dd>
     <a href="/trainings/<%=nextBooked[currency.type]._id%>"
