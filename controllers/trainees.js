@@ -27,6 +27,7 @@ const show = async (req, res) => {
       {
         type: currency.type,
         trainees: traineeId,
+        complete: false,
       },
       "end"
     );

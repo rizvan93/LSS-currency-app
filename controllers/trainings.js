@@ -1,4 +1,5 @@
 const Training = require("../models/training");
+const Trainee = require("../models/trainee");
 const dayjs = require("dayjs");
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
@@ -78,6 +79,42 @@ const fillTrainingFromBody = (body) => {
   return newTraining;
 };
 
+const updateTrainees = async (req, res) => {
+  const attendees = Object.keys(req.body);
+  const { trainingId } = req.params;
+
+  const training = await Training.findById(trainingId);
+  const getNextExpiry = requirements.nextExpiries[training.type];
+
+  for (const attendee of attendees) {
+    const trainee = await Trainee.findById(attendee);
+    const index = trainee.currencies.findIndex(
+      (currency) => currency.type === training.type
+    );
+    const expiry = trainee.currencies[index].expiry;
+
+    trainee.currencies[index].expiry = getNextExpiry(
+      expiry,
+      training.end,
+      trainee.seniority
+    );
+    // if (training.type === "DFS Refresher") {
+    //   const indexYOGA = trainee.currencies.findIndex(
+    //     (currency) => currency.type === "DFS YOGA"
+    //   );
+    //   trainee.currencies[indexYOGA].expiry = trainee.currencies[index].expiry;
+    // }
+    await trainee.save();
+  }
+
+  await Training.findByIdAndUpdate(trainingId, {
+    trainees: attendees,
+    complete: true,
+  });
+
+  res.redirect("/trainings/" + trainingId);
+};
+
 module.exports = {
   index,
   seed,
@@ -87,4 +124,5 @@ module.exports = {
   edit,
   update,
   delete: deleteTraining,
+  updateTrainees,
 };

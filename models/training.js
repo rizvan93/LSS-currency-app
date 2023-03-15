@@ -10,6 +10,7 @@ const trainingSchema = new Schema(
     end: { type: Date, required: true },
     remarks: { type: String },
     trainees: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Trainee" }],
+    complete: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

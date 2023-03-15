@@ -41,4 +41,6 @@ router.delete(
   trainingsCtrl.delete
 );
 
+router.post("/:trainingId", isAuth(["trainer"]), trainingsCtrl.updateTrainees);
+
 module.exports = router;

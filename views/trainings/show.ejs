@@ -30,7 +30,7 @@
       <th>Expiry</th>
       <th>Completed</th>
     </thead>
-    <form>
+    <form action="/trainings/<%=training._id%>" method="post">
       <tbody>
         <% training.trainees.forEach((trainee) => { %>
         <tr>
@@ -38,12 +38,16 @@
           <td><%= trainee.contact %></td>
           <td><%= trainee.vehNum %></td>
           <td><%= dayjs(trainee.currencies.find(currency => currency.type === training.type).expiry).format("D MMM YY") %></td>
-          <td><input name="trainee._id" type="checkbox"/></a></td>
+          <td><input name="<%= trainee._id %>" type="checkbox" <% if (training.complete) { %> checked disabled <% } %>/></a></td>
         </tr>
         <% }) %>
       </tbody>
     </table>
+    <% if (training.complete) { %>
+      <h3>Complete</h3>
+      <% } else { %>
     <button>Update Attendance</button>
+    <% } %>
   </form>
 </div>
 <%}%>
