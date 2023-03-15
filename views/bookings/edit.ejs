@@ -19,7 +19,7 @@
         %>
       </td>
       <td>
-        <% if (training._id.toString() === id) { %>
+        <% if (training._id.toString() === trainingId) { %>
         <form method="post" action="/bookings/<%=training._id%>?_method=DELETE">
           <input name="traineeId" value="<%=traineeId%>" class="hidden" />
           <button>Delete Booking</button>
@@ -27,7 +27,11 @@
         <%} else {%>
         <form method="post" action="/bookings/<%=training._id%>?_method=PUT">
           <input name="traineeId" value="<%=traineeId%>" class="hidden" />
-          <input name="previousBooking" value="<%=id%>" class="hidden" />
+          <input
+            name="previousBooking"
+            value="<%=trainingId%>"
+            class="hidden"
+          />
           <button>Change Booking</button>
         </form>
         <%}%>

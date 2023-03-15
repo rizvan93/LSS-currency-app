@@ -17,15 +17,21 @@ const create = async (req, res) => {
 };
 
 const edit = async (req, res) => {
-  const { id, traineeId } = req.params;
-  const { type } = await Training.findById(id, "type");
+  const { trainingId, traineeId } = req.params;
+  const { type } = await Training.findById(trainingId);
   const trainings = await Training.find({ type: type });
 
-  res.render("bookings/edit", { trainings, traineeId, type, id, dayjs });
+  res.render("bookings/edit", {
+    trainings,
+    traineeId,
+    type,
+    trainingId,
+    dayjs,
+  });
 };
 
 const update = async (req, res) => {
-  const { id } = req.params;
+  const { trainingId } = req.params;
   const { traineeId, previousBooking } = req.body;
 
   const training = await Training.findById(previousBooking);
@@ -33,7 +39,7 @@ const update = async (req, res) => {
   training.trainees.splice(index, 1);
   await training.save();
 
-  const newTraining = await Training.findById(id);
+  const newTraining = await Training.findById(trainingId);
   newTraining.trainees.push(traineeId);
   await newTraining.save();
 
@@ -41,10 +47,10 @@ const update = async (req, res) => {
 };
 
 const deleteBooking = async (req, res) => {
-  const { id } = req.params;
+  const { trainingId } = req.params;
   const { traineeId } = req.body;
 
-  const training = await Training.findById(id);
+  const training = await Training.findById(trainingId);
   const index = training.trainees.indexOf(traineeId.toString());
   training.trainees.splice(index, 1);
   await training.save();

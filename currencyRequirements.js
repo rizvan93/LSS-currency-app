@@ -93,7 +93,7 @@ const status = (expiry) => {
 const getOverallStatus = (trainee) => {
   const expiries = trainee.currencies.map((currency) => currency.expiry);
 
-  for (const expiry in expiries) {
+  for (const expiry of expiries) {
     const expired = dayjs().isAfter(dayjs(expiry), "day");
 
     if (expired) {
@@ -101,7 +101,7 @@ const getOverallStatus = (trainee) => {
     }
   }
 
-  for (const expiry in expiries) {
+  for (const expiry of expiries) {
     const dueSoon = dayjs().add(3, "month").isAfter(dayjs(expiry));
 
     if (dueSoon) {
