@@ -2,6 +2,9 @@ const Trainee = require("../models/trainee");
 const Training = require("../models/training");
 const User = require("../models/user");
 const dayjs = require("dayjs");
+const bcrypt = require("bcrypt");
+
+const saltRounds = 10;
 
 const requirements = require("../currencyRequirements");
 
@@ -44,46 +47,54 @@ const show = async (req, res) => {
 };
 
 const newTrainee = (req, res) => {
-  const requirementNames = requirements.names;
-  res.render("trainees/new", { requirementNames, message: "" });
+  res.render("trainees/new", {
+    requirementNames: requirements.names,
+    message: "",
+  });
 };
 
 const create = async (req, res) => {
   const users = await User.find({}, "userId");
   const userIds = users.map((user) => user.userId);
   const { userId, password, confirmPassword } = req.body;
+
   if (userIds.includes(userId)) {
-    res.render("/trainees/new", {
-      requirementNames,
+    res.render("trainees/new", {
+      requirementNames: requirements.names,
       message: "Username already taken",
+      trainee: clearPasswords(req.body),
     });
-  } else {
-    if (password !== confirmPassword) {
-      res.render("/trainees/new", {
-        requirementNames,
-        message: "Passwords must match",
-      });
-    } else {
-      const newUser = {
-        userId: req.body.userId,
-        password: req.body.password,
-        account: "trainee",
-      };
-
-      const newTrainee = {};
-      const trainee = await Trainee.create(
-        fillTraineeFromBody(newTrainee, req.body)
-      );
-
-      newUser.traineeId = trainee._id;
-      await User.create(newUser);
-      res.redirect("/trainees");
-    }
+    return;
   }
+  if (password !== confirmPassword) {
+    res.render("trainees/new", {
+      message: "Passwords must match",
+      requirementNames: requirements.names,
+      trainee: clearPasswords(req.body),
+    });
+    return;
+  }
+  console.log("after verification");
+
+  const newTrainee = {};
+  const trainee = await Trainee.create(
+    fillTraineeFromBody(newTrainee, req.body)
+  );
+
+  const newUser = {
+    userId: req.body.userId,
+    password: await bcrypt.hash(password, saltRounds),
+    account: "trainee",
+    traineeId: trainee._id,
+  };
+  console.log(await User.create(newUser));
+  console.log("user created");
+  res.redirect("/trainees");
 };
 
 const deleteTrainee = async (req, res) => {
   const { traineeId } = req.params;
+  await User.findOneAndDelete({ traineeId: traineeId });
   await Trainee.findByIdAndDelete(traineeId);
   res.redirect("/trainees");
 };
@@ -125,6 +136,12 @@ const fillTraineeFromBody = (newTrainee, body) => {
     newTrainee.currencies.push(currency);
   });
   return newTrainee;
+};
+
+const clearPasswords = (body) => {
+  body.password = "";
+  body.confirmPassword = "";
+  return body;
 };
 
 module.exports = {

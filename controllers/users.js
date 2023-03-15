@@ -85,11 +85,10 @@ const newUser = (req, res) => {
 
 const create = async (req, res) => {
   const { userId, password, confirmPassword } = req.body;
+  console.log("waiting to find users");
   const users = await User.find({}, "userId");
+  console.log(`found ${users.length} users`);
   const userIds = users.map((user) => user.userId);
-  // res.send(JSON.stringify(userIds));
-  console.log(userIds);
-  console.log(userId);
 
   if (userIds.includes(userId)) {
     res.render("users/new", {
@@ -104,6 +103,8 @@ const create = async (req, res) => {
     return;
   }
 
+  console.log("waiting to create user");
+  req.body.password = await bcrypt.hash(password, saltRounds);
   await User.create(req.body);
 
   res.redirect("/users");
