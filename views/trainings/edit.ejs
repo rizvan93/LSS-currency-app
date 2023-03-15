@@ -1,0 +1,10 @@
+<%- include("../partials/header") %>
+<h1>
+  Edit <%= training.type %> on <%= dayjs(training.start).format("D MMM YY") %>
+</h1>
+
+<form method="post" action="/trainings/<%= training._id %>?_method=PUT">
+  <%- include("../partials/trainingFieldset", requirementNames, training)%>
+  <button>UPDATE</button>
+</form>
+<%- include("../partials/footer") %>

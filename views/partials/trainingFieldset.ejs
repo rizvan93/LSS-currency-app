@@ -1,0 +1,49 @@
+<fieldset>
+  <legend>Details of training session</legend>
+  <label
+    >Type
+    <select name="type" required>
+      <option value="">Select an option</option>
+      <% requirementNames.forEach((requirementName)=>{ %>
+      <option value="<%= requirementName%>" <% if (requirementName === training.type) { %> selected <% } %>><%= requirementName %></option>
+      <% }) %>
+    </select> </label
+  ><br />
+  <label
+    >Start: <% if (training.start) { %>
+      <input name="startDate" type="date" value="<%= dayjs(training.start).format("YYYY-MM-DD") %>"/>
+      <input name="startTime" type="time" value="<%= dayjs(training.start).format("HH:mm") %>"/>
+    <% } else { %>
+      <input name="startDate" type="date" required />
+      <input name="startTime" type="time" required />
+    <% } %>
+  </label>
+  <br />
+  <label
+    >End: <% if (training.end) { %>
+      <input name="endDate" type="date" value="<%= dayjs(training.end).format("YYYY-MM-DD") %>"/>
+      <input name="endTime" type="time" value="<%= dayjs(training.end).format("HH:mm") %>"/>
+    <% } else { %>
+      <input name="endDate" type="date" required />
+      <input name="endTime" type="time" required />
+    <% } %>
+    </label>
+    <br />
+  <label
+    >Capacity: <% if (training.capacity) { %>
+      <input name="capacity" type="number" required min="1" value="<%= training.capacity %>" />
+      <% } else { %>  
+    <input name="capacity" type="number" required min="1" " />
+    <% } %>
+  </label>
+  <br />
+  <label
+    >Additional Instructions: <% if (training.remarks) { %>
+      <textarea name="remarks" rows="5" value="<%= training.remarks %>"></textarea>
+      <% } else { %>
+        <textarea name="remarks" rows="5"></textarea>
+
+      <% } %>
+    </label
+  ><br />
+</fieldset>

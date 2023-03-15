@@ -3,12 +3,16 @@
 
 <div>
   <h1><%= training.type %></h1>
-  <h4>Start: <%= dayjs(training.start).format("D-MMM-YY, HH:mm")%></h4>
-  <h4>End: <%= dayjs(training.end).format("D-MMM-YY, HH:mm")%></h4>
-  <h4>
-    Vacancies: <%=training.capacity -
+  <p><b>Start:</b> <%= dayjs(training.start).format("D-MMM-YY, HH:mm")%></p>
+  <p><b>End:</b> <%= dayjs(training.end).format("D-MMM-YY, HH:mm")%></p>
+  <p>
+    <b>Vacancies:</b> <%=training.capacity -
     training.trainees.length%>/<%=training.capacity%>
-  </h4>
+  </p>
+  <% if (training.remarks) { %>
+  <p><b>Additional Instructions:</b> </p>
+  <p> <%= training.remarks %></p>
+  <% } %>
 </div>
 <a href="/trainings/<%= training._id %>/edit">Edit</a>
 <form action="/trainings/<%= training._id %>?_method=DELETE" method="post">

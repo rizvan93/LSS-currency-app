@@ -30,18 +30,43 @@ const show = async (req, res) => {
   const { trainingId } = req.params;
   const training = await Training.findById(trainingId).populate("trainees");
 
-  console.log(training.trainees);
   res.render("trainings/show", { training, dayjs });
-  // res.send("show users: " + users);
 };
 
 const newTraining = (req, res) => {
-  const requirementNames = requirements.names;
-  res.render("trainings/new", { requirementNames });
+  res.render("trainings/new", { requirementNames: requirements.names });
 };
 
 const create = async (req, res) => {
-  const newTraining = req.body;
+  await Training.create(fillTrainingFromBody(req.body));
+  res.redirect("/trainings");
+};
+
+const edit = async (req, res) => {
+  const { trainingId } = req.params;
+  const training = await Training.findById(trainingId);
+  res.render("trainings/edit", {
+    training,
+    dayjs,
+    requirementNames: requirements.names,
+  });
+};
+
+const update = async (req, res) => {
+  const { trainingId } = req.params;
+  await Training.findByIdAndUpdate(trainingId, fillTrainingFromBody(req.body));
+
+  res.redirect("/trainings");
+};
+
+const deleteTraining = async (req, res) => {
+  const { trainingId } = req.params;
+  await Training.findByIdAndDelete(trainingId);
+  res.redirect("/trainings");
+};
+
+const fillTrainingFromBody = (body) => {
+  const newTraining = body;
   newTraining.start = dayjs(
     newTraining.startDate + " " + newTraining.startTime,
     "YYYY-MM-DD HH:mm"
@@ -50,23 +75,7 @@ const create = async (req, res) => {
     newTraining.endDate + " " + newTraining.endTime,
     "YYYY-MM-DD HH:mm"
   );
-  await Training.create(newTraining);
-  res.redirect("/trainings");
-};
-
-const edit = async (req, res) => {
-  const { trainingId } = req.params;
-  res.send("edit this document: " + trainingId);
-};
-
-const update = async (req, res) => {
-  res.send("update document");
-};
-
-const deleteTraining = async (req, res) => {
-  const { trainingId } = req.params;
-  await Training.findByIdAndDelete(trainingId);
-  res.redirect("/trainings");
+  return newTraining;
 };
 
 module.exports = {
