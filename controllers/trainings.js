@@ -93,17 +93,12 @@ const updateTrainees = async (req, res) => {
     );
     const expiry = trainee.currencies[index].expiry;
 
-    trainee.currencies[index].expiry = getNextExpiry(
-      expiry,
-      training.end,
+    requirements.updateExpiries(
+      trainee.currencies,
+      training,
       trainee.seniority
     );
-    // if (training.type === "DFS Refresher") {
-    //   const indexYOGA = trainee.currencies.findIndex(
-    //     (currency) => currency.type === "DFS YOGA"
-    //   );
-    //   trainee.currencies[indexYOGA].expiry = trainee.currencies[index].expiry;
-    // }
+
     await trainee.save();
   }
 

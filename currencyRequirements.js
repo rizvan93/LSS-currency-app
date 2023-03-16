@@ -34,84 +34,6 @@ const currencyDetails = {
   },
 };
 
-const nextExpiries = {
-  ACE: (expiry, lastAttended) => {
-    const reattemptPeriod = 4; //months
-    const validityExtension = 1; //years
-    return getNextExpiry(
-      expiry,
-      lastAttended,
-      reattemptPeriod,
-      validityExtension
-    );
-  },
-  APT: (expiry, lastAttended) => {
-    const reattemptPeriod = 0; //months
-    const validityExtension = 3; //years
-    return getNextExpiry(
-      expiry,
-      lastAttended,
-      reattemptPeriod,
-      validityExtension
-    );
-  },
-  "NVG Refresher": (expiry, lastAttended) => {
-    const reattemptPeriod = 0; //months
-    const validityExtension = 3; //years
-
-    return getNextExpiry(
-      expiry,
-      lastAttended,
-      reattemptPeriod,
-      validityExtension
-    );
-  },
-  "DFS Refresher": (expiry, lastAttended, seniority) => {
-    const reattemptPeriod = 3; //months
-    let validityExtension = 3; //years
-    if (seniority === "Senior") {
-      validityExtension = 5; //years
-    }
-
-    return getNextExpiry(
-      expiry,
-      lastAttended,
-      reattemptPeriod,
-      validityExtension
-    );
-  },
-  "DFS YOGA": (expiry, lastAttended, seniority) => {
-    const reattemptPeriod = 0; //months
-    const validityExtension = 1; //years
-    return getNextExpiry(
-      expiry,
-      lastAttended,
-      reattemptPeriod,
-      validityExtension
-    );
-  },
-  "Survival Refresher Videos": (expiry, lastAttended) => {
-    const reattemptPeriod = 0; //months
-    const validityExtension = 1; //years
-    return getNextExpiry(
-      expiry,
-      lastAttended,
-      reattemptPeriod,
-      validityExtension
-    );
-  },
-  "Dinghy Drill & Ejection Seat Trainer": (expiry, lastAttended) => {
-    const reattemptPeriod = 0; //months
-    const validityExtension = 2; //years
-    return getNextExpiry(
-      expiry,
-      lastAttended,
-      reattemptPeriod,
-      validityExtension
-    );
-  },
-};
-
 const updateExpiries = (currencies, training, seniority) => {
   const index = currencies.findIndex(
     (currency) => currency.type === training.type
@@ -141,9 +63,9 @@ const updateExpiries = (currencies, training, seniority) => {
   }
 };
 
-const names = Object.keys(nextExpiries);
+const names = Object.keys(currencyDetails);
 
-const status = (expiry) => {
+const getStatus = (expiry) => {
   const expired = dayjs().isAfter(dayjs(expiry), "day");
   const dueSoon = dayjs().add(3, "month").isAfter(dayjs(expiry));
 
@@ -203,9 +125,8 @@ const getNextExpiry = (
 };
 
 module.exports = {
-  nextExpiries,
   names,
-  status,
+  getStatus,
   getOverallStatus,
   updateExpiries,
 };
