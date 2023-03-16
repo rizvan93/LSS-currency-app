@@ -2,6 +2,38 @@ const dayjs = require("dayjs");
 const isSameOrBefore = require("dayjs/plugin/isSameOrBefore");
 dayjs.extend(isSameOrBefore);
 
+const currencyDetails = {
+  ACE: {
+    reattemptWindow: 4, //months
+    extension: 1, //years
+  },
+  APT: {
+    reattemptWindow: 0, //months
+    extension: 3, //years
+  },
+  "NVG Refresher": {
+    reattemptWindow: 0, //months
+    extension: 3, //years
+  },
+  "DFS Refresher": {
+    reattemptWindow: 3, //months
+    extension: 3, //years
+    extensionSenior: 5, //years
+  },
+  "DFS YOGA": {
+    reattemptWindow: 0, //months
+    extension: 1, //years
+  },
+  "Survival Refresher Videos": {
+    reattemptWindow: 0, //months
+    extension: 1, //years
+  },
+  "Dinghy Drill & Ejection Seat Trainer": {
+    reattemptWindow: 0, //months
+    extension: 2, //years
+  },
+};
+
 const nextExpiries = {
   ACE: (expiry, lastAttended) => {
     const reattemptPeriod = 4; //months
@@ -80,6 +112,35 @@ const nextExpiries = {
   },
 };
 
+const updateExpiries = (currencies, training, seniority) => {
+  const index = currencies.findIndex(
+    (currency) => currency.type === training.type
+  );
+  if (index >= 0) {
+    const updatedCurrency = currencies[index];
+    let { reattemptWindow, extension } = currencyDetails[training.type];
+    if (training.type === "DFS Refresher" && seniority === "Senior") {
+      extension = currencyDetails[training.type].extensionSenior;
+    }
+    updatedCurrency.expiry = getNextExpiry(
+      updatedCurrency.expiry,
+      training.end,
+      reattemptWindow,
+      extension
+    );
+
+    if (training.type === "DFS Refresher") {
+      const yogaTraining = {
+        type: "DFS YOGA",
+        end: training.end,
+      };
+      updateExpiries(currencies, yogaTraining, seniority);
+    }
+
+    currencies.splice(index, 1, updatedCurrency);
+  }
+};
+
 const names = Object.keys(nextExpiries);
 
 const status = (expiry) => {
@@ -141,4 +202,10 @@ const getNextExpiry = (
   }
 };
 
-module.exports = { nextExpiries, names, status, getOverallStatus };
+module.exports = {
+  nextExpiries,
+  names,
+  status,
+  getOverallStatus,
+  updateExpiries,
+};

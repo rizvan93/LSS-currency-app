@@ -37,7 +37,7 @@ const show = async (req, res) => {
     statuses[currency.type] = requirements.status(currency.expiry);
   }
   const overallStatus = requirements.getOverallStatus(trainee);
-
+  console.log(trainee.currencies);
   res.render("trainees/show", {
     trainee,
     nextBooked,
