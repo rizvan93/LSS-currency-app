@@ -43,7 +43,6 @@ const show = async (req, res) => {
   const overallStatus = requirements.getOverallStatus(trainee);
 
   trainee.currencies.sort((a, b) => a.expiry - b.expiry);
-  console.log(trainee.currencies);
 
   const navFields = getNavFields(req.session.account);
   res.render("trainees/show", {
@@ -133,6 +132,7 @@ const edit = async (req, res) => {
 const update = async (req, res) => {
   const { traineeId } = req.params;
 
+  console.log(req.body);
   const trainee = await Trainee.findById(traineeId);
   await fillTraineeFromBody(trainee, req.body).save();
 
@@ -151,7 +151,8 @@ const fillTraineeFromBody = (newTrainee, body) => {
       type: name,
       expiry: body[name],
     };
-    newTrainee.currencies.push(currency);
+    if (name !== "DFS YOGA" || newTrainee.seniority !== "Senior")
+      newTrainee.currencies.push(currency);
   });
   return newTrainee;
 };
