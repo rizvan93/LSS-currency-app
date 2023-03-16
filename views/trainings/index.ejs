@@ -7,7 +7,7 @@
     <th>Type</th>
     <th>Start</th>
     <th>End</th>
-    <th>Capacity</th>
+    <th>Vacancies</th>
     <th>Actions</th>
   </thead>
   <tbody>
@@ -16,7 +16,10 @@
       <td><%= training.type %></td>
       <td><%= dayjs(training.start).format("D-MMM-YY, HH:mm") %></td>
       <td><%= dayjs(training.end).format("D-MMM-YY, HH:mm") %></td>
-      <td><%= training.capacity %></td>
+      <td>
+        <%= training.capacity - training.trainees.length %>/<%=
+        training.capacity %>
+      </td>
       <td><a href="/trainings/<%= training._id %>">Show Details</a></td>
     </tr>
     <% }) %>

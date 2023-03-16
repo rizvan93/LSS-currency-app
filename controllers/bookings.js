@@ -3,7 +3,7 @@ const dayjs = require("dayjs");
 
 const newBooking = async (req, res) => {
   const { traineeId, type } = req.params;
-  const trainings = await Training.find({ type: type, complete: false });
+  const trainings = await Training.find({ type: type });
 
   res.render("bookings/new", { trainings, traineeId, type, dayjs });
 };
@@ -19,7 +19,7 @@ const create = async (req, res) => {
 const edit = async (req, res) => {
   const { trainingId, traineeId } = req.params;
   const { type } = await Training.findById(trainingId);
-  const trainings = await Training.find({ type: type, complete: false });
+  const trainings = await Training.find({ type: type });
 
   res.render("bookings/edit", {
     trainings,

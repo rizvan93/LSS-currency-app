@@ -4,8 +4,8 @@
 
 <nav>
   Add User:
-  <a href="/users/new">Non-Trainee</a>
-  <a href="/trainees/new">Trainee</a>
+  <a href="/users/new">Non-Aircrew</a>
+  <a href="/trainees/new">Aircrew</a>
 </nav>
 
 <table>
@@ -20,7 +20,7 @@
       <td><%=user.userId%></td>
       <td>
         <% if (user.account === "trainee") {%>
-        <a href="/trainees/<%=user.traineeId%>">Trainee</a> <%} else {%>
+        <a href="/trainees/<%=user.traineeId%>">Aircrew</a> <%} else {%>
         <%=user.account%> <%}%>
       </td>
       <td>
