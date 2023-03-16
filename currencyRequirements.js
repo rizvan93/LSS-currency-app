@@ -25,10 +25,15 @@ const currencyDetails = {
     extension: 1, //years
   },
   "Survival Refresher Videos": {
+    // has special controller in controllers/trainees -> show
     reattemptWindow: 0, //months
     extension: 1, //years
   },
-  "Dinghy Drill & Ejection Seat Trainer": {
+  "Dinghy Drill Trainer": {
+    reattemptWindow: 0, //months
+    extension: 2, //years
+  },
+  "Ejection Seat Trainer": {
     reattemptWindow: 0, //months
     extension: 2, //years
   },

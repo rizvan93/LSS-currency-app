@@ -20,8 +20,8 @@
     <tr>
       <td><%=user.userId%></td>
       <td text-transform="capitalize">
-        <% if (user.account === "trainee") {%>
-        <a href="/trainees/<%=user.traineeId%>">aircrew</a> <%} else {%>
+        <% if (user.account === "Aircrew") {%>
+        <a href="/trainees/<%=user.traineeId%>">Aircrew</a> <%} else {%>
         <%=user.account%> <%}%>
       </td>
       <td>

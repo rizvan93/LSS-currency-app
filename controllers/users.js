@@ -4,33 +4,6 @@ const getNavFields = require("../views/navBar");
 
 const saltRounds = 10;
 
-const seedAdmin = (req, res) => {
-  const newUser = {};
-  newUser.userId = "trainer";
-  newUser.account = "trainer";
-  const password = "password";
-  bcrypt.hash(password, saltRounds, async (err, hash) => {
-    newUser.password = await hash;
-    await User.create(newUser);
-    res.send("user created: " + JSON.stringify(newUser));
-  });
-};
-
-const seedTrainee = (req, res) => {
-  const { traineeId } = req.params;
-  const newUser = {};
-  newUser.userId = "trainee2";
-  newUser.account = "trainee";
-  newUser.traineeId = traineeId;
-
-  const password = "password";
-  bcrypt.hash(password, saltRounds, async (err, hash) => {
-    newUser.password = await hash;
-    await User.create(newUser);
-    res.send("user created: " + JSON.stringify(newUser));
-  });
-};
-
 const homes = {
   admin: "/users",
   traineeAdmin: "/trainees",
@@ -76,7 +49,14 @@ const logout = (req, res) => {
 };
 
 const index = async (req, res) => {
-  const users = await User.find({});
+  const users = await User.find({}).sort({ createdAt: 1 });
+  const accountNames = {
+    admin: "Administrator",
+    trainee: "Aircrew",
+    traineeAdmin: "Aircrew Administrator",
+    trainer: "Vendor",
+  };
+  users.map((user) => (user.account = accountNames[user.account]));
   const navFields = getNavFields(req.session.account);
   res.render("users/index", { users, navFields });
 };
@@ -131,6 +111,4 @@ module.exports = {
   new: newUser,
   create,
   delete: deleteUser,
-  seedAdmin,
-  seedTrainee,
 };

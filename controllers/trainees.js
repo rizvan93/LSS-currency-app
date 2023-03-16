@@ -10,7 +10,7 @@ const saltRounds = 10;
 const requirements = require("../currencyRequirements");
 
 const index = async (req, res) => {
-  const trainees = await Trainee.find({});
+  const trainees = await Trainee.find({}).sort({ name: 1 });
   const navFields = getNavFields(req.session.account);
   res.render("trainees/index", {
     trainees,
@@ -25,6 +25,7 @@ const show = async (req, res) => {
   const trainee = await Trainee.findById(traineeId);
   const nextBooked = {};
   const statuses = {};
+
   for (const currency of trainee.currencies) {
     const booking = await Training.findOne(
       {
@@ -40,6 +41,9 @@ const show = async (req, res) => {
     statuses[currency.type] = requirements.getStatus(currency.expiry);
   }
   const overallStatus = requirements.getOverallStatus(trainee);
+
+  trainee.currencies.sort((a, b) => a.expiry - b.expiry);
+  console.log(trainee.currencies);
 
   const navFields = getNavFields(req.session.account);
   res.render("trainees/show", {
