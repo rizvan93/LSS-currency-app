@@ -18,7 +18,7 @@ This web application allows aircrew to:
 * Visual Studio Code for development
   * Prettier extension for formatting
 * MongoDB to host database
-* ejs engine to display views
+* EJS engine to display views
 * Node and the following libraries (and their dependencies)
   * express: server development
   * mongoose: connection to MongoDB database
@@ -66,11 +66,11 @@ The application stores data in three Collections within a MongoDB Database, with
 
 ### _View_
 
-The views were generated using ejs to dynamically display information passed by the Controller when rendered. 
+The views were generated using EJS to dynamically display information passed by the Controller when rendered. 
 
 The views comprise tables to display relevant information to users, as well as links, input fields, and buttons for the user to interact with the application. 
 
-Lastly, ejs partials were used to streamline the code within the views. For example, the create and edit views both share a partial that contains the form fieldset to be displayed.
+Lastly, EJS partials were used to streamline the code within the views. For example, the create and edit views both share a partial that contains the form fieldset to be displayed.
 
 ### _Controller_
 
