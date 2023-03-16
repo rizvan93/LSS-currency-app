@@ -3,6 +3,7 @@ const Training = require("../models/training");
 const User = require("../models/user");
 const dayjs = require("dayjs");
 const bcrypt = require("bcrypt");
+const getNavFields = require("../views/navBar");
 
 const saltRounds = 10;
 
@@ -10,10 +11,12 @@ const requirements = require("../currencyRequirements");
 
 const index = async (req, res) => {
   const trainees = await Trainee.find({});
+  const navFields = getNavFields(req.session.account);
   res.render("trainees/index", {
     trainees,
     getOverallStatus: requirements.getOverallStatus,
     dayjs,
+    navFields,
   });
 };
 
@@ -37,20 +40,24 @@ const show = async (req, res) => {
     statuses[currency.type] = requirements.getStatus(currency.expiry);
   }
   const overallStatus = requirements.getOverallStatus(trainee);
-  console.log(trainee.currencies);
+
+  const navFields = getNavFields(req.session.account);
   res.render("trainees/show", {
     trainee,
     nextBooked,
     statuses,
     overallStatus,
     dayjs,
+    navFields,
   });
 };
 
 const newTrainee = (req, res) => {
+  const navFields = getNavFields(req.session.account);
   res.render("trainees/new", {
     requirementNames: requirements.names,
     message: "",
+    navFields,
   });
 };
 
@@ -59,11 +66,13 @@ const create = async (req, res) => {
   const userIds = users.map((user) => user.userId);
   const { userId, password, confirmPassword } = req.body;
 
+  const navFields = getNavFields(req.session.account);
   if (userIds.includes(userId)) {
     res.render("trainees/new", {
       requirementNames: requirements.names,
       message: "Username already taken",
       trainee: clearPasswords(req.body),
+      navFields,
     });
     return;
   }
@@ -72,6 +81,7 @@ const create = async (req, res) => {
       message: "Passwords must match",
       requirementNames: requirements.names,
       trainee: clearPasswords(req.body),
+      navFields,
     });
     return;
   }
@@ -105,11 +115,14 @@ const edit = async (req, res) => {
   const trainee = await Trainee.findById(traineeId);
   //   res.send(JSON.stringify(trainee));
   const requirementNames = requirements.names;
+
+  const navFields = getNavFields(req.session.account);
   res.render("trainees/edit", {
     trainee,
     message: "",
     requirementNames,
     dayjs,
+    navFields,
   });
 };
 

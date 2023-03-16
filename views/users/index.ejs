@@ -1,4 +1,5 @@
-<%- include("../partials/header")%> <%- include("../partials/nav")%>
+<%- include("../partials/header")%> <%- include("../partials/nav", { navFields
+})%>
 
 <h1>Currency Tracker Users Index</h1>
 
@@ -18,9 +19,9 @@
     <% users.forEach((user) => {%>
     <tr>
       <td><%=user.userId%></td>
-      <td>
+      <td text-transform="capitalize">
         <% if (user.account === "trainee") {%>
-        <a href="/trainees/<%=user.traineeId%>">Aircrew</a> <%} else {%>
+        <a href="/trainees/<%=user.traineeId%>">aircrew</a> <%} else {%>
         <%=user.account%> <%}%>
       </td>
       <td>

@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
+const getNavFields = require("../views/navBar");
 
 const saltRounds = 10;
 
@@ -76,11 +77,13 @@ const logout = (req, res) => {
 
 const index = async (req, res) => {
   const users = await User.find({});
-  res.render("users/index", { users });
+  const navFields = getNavFields(req.session.account);
+  res.render("users/index", { users, navFields });
 };
 
 const newUser = (req, res) => {
-  res.render("users/new", { message: "" });
+  const navFields = getNavFields(req.session.account);
+  res.render("users/new", { message: "", navFields });
 };
 
 const create = async (req, res) => {
@@ -90,15 +93,18 @@ const create = async (req, res) => {
   console.log(`found ${users.length} users`);
   const userIds = users.map((user) => user.userId);
 
+  const navFields = getNavFields(req.session.account);
   if (userIds.includes(userId)) {
     res.render("users/new", {
       message: "Username already taken",
+      navFields,
     });
     return;
   }
   if (password !== confirmPassword) {
     res.render("users/new", {
       message: "Passwords do not match",
+      navFields,
     });
     return;
   }

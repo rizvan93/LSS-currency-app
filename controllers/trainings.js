@@ -4,38 +4,28 @@ const dayjs = require("dayjs");
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 const requirements = require("../currencyRequirements");
-
-const seed = async (req, res) => {
-  const newTraining = {
-    type: "req3",
-    capacity: 15,
-    start: dayjs("15-07-2023, 09:00", "DD-MM-YYYY, HH:mm"),
-    end: dayjs("15-07-2023, 12:00", "DD-MM-YYYY, HH:mm"),
-    remarks: "",
-    trainees: ["640a8ccb261aa20ab037447d"],
-  };
-  try {
-    await Training.create(newTraining);
-    res.send(JSON.stringify(newTraining) + " created");
-  } catch (error) {
-    res.send("unable to create. " + error);
-  }
-};
+const getNavFields = require("../views/navBar");
 
 const index = async (req, res) => {
   const trainings = await Training.find({});
-  res.render("trainings/index", { trainings, dayjs });
+  const navFields = getNavFields(req.session.account);
+  res.render("trainings/index", { trainings, dayjs, navFields });
 };
 
 const show = async (req, res) => {
   const { trainingId } = req.params;
   const training = await Training.findById(trainingId).populate("trainees");
 
-  res.render("trainings/show", { training, dayjs });
+  const navFields = getNavFields(req.session.account);
+  res.render("trainings/show", { training, dayjs, navFields });
 };
 
 const newTraining = (req, res) => {
-  res.render("trainings/new", { requirementNames: requirements.names });
+  const navFields = getNavFields(req.session.account);
+  res.render("trainings/new", {
+    requirementNames: requirements.names,
+    navFields,
+  });
 };
 
 const create = async (req, res) => {
@@ -46,10 +36,13 @@ const create = async (req, res) => {
 const edit = async (req, res) => {
   const { trainingId } = req.params;
   const training = await Training.findById(trainingId);
+
+  const navFields = getNavFields(req.session.account);
   res.render("trainings/edit", {
     training,
     dayjs,
     requirementNames: requirements.names,
+    navFields,
   });
 };
 
@@ -84,14 +77,12 @@ const updateTrainees = async (req, res) => {
   const { trainingId } = req.params;
 
   const training = await Training.findById(trainingId);
-  const getNextExpiry = requirements.nextExpiries[training.type];
 
   for (const attendee of attendees) {
     const trainee = await Trainee.findById(attendee);
     const index = trainee.currencies.findIndex(
       (currency) => currency.type === training.type
     );
-    const expiry = trainee.currencies[index].expiry;
 
     requirements.updateExpiries(
       trainee.currencies,
@@ -112,7 +103,6 @@ const updateTrainees = async (req, res) => {
 
 module.exports = {
   index,
-  seed,
   show,
   new: newTraining,
   create,

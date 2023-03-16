@@ -1,18 +1,23 @@
 const Training = require("../models/training");
 const dayjs = require("dayjs");
+const getNavFields = require("../views/navBar");
 
 const newBooking = async (req, res) => {
   const { traineeId, type } = req.params;
   const trainings = await Training.find({ type: type });
 
-  res.render("bookings/new", { trainings, traineeId, type, dayjs });
+  const navFields = {
+    Back: "/trainees/" + traineeId,
+    ...getNavFields(req.session.account),
+  };
+  res.render("bookings/new", { trainings, traineeId, type, dayjs, navFields });
 };
 
 const create = async (req, res) => {
   //   res.send("confirm this booking");
   const { traineeId, trainingId } = req.body;
   const update = { $push: { trainees: traineeId } };
-  const updatedTraining = await Training.findByIdAndUpdate(trainingId, update);
+  await Training.findByIdAndUpdate(trainingId, update);
   res.redirect("/trainees/" + traineeId);
 };
 
@@ -21,12 +26,17 @@ const edit = async (req, res) => {
   const { type } = await Training.findById(trainingId);
   const trainings = await Training.find({ type: type });
 
+  const navFields = {
+    Back: "/trainees/" + traineeId,
+    ...getNavFields(req.session.account),
+  };
   res.render("bookings/edit", {
     trainings,
     traineeId,
     type,
     trainingId,
     dayjs,
+    navFields,
   });
 };
 

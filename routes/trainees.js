@@ -24,7 +24,7 @@ router.delete(
 
 router.get(
   "/:traineeId/edit",
-  isAuth(["admin", "traineeAdmin", "trainee"]),
+  isAuth(["admin", "traineeAdmin"]),
   isTrainee,
   traineeCtrl.edit
 );

@@ -44,11 +44,11 @@
   <legend>Currency Expiry Dates</legend>
   <% requirementNames.forEach((requirementName, index) => { %>
   <label
-    ><%= requirementName %>*: <% if (trainee.currencies &&
+    ><%= requirementName %>: <% if (trainee.currencies &&
     trainee.currencies.find(currency => currency.type === requirementName)) { %>
     <input name="<%=requirementName%>" type="date"
     value="<%=dayjs(trainee.currencies.find(currency => currency.type ===
-    requirementName).expiry).format("YYYY-MM-DD")%>" required /><% } else { %>
+    requirementName).expiry).format("YYYY-MM-DD")%>" /><% } else { %>
     <input name="<%=requirementName%>" type="date" /> <% } %></label
   >
   <br />

@@ -3,8 +3,6 @@ const router = express.Router();
 const trainingsCtrl = require("../controllers/trainings");
 const { isAuth } = require("../controllers/isAuth");
 
-router.get("/seed", trainingsCtrl.seed);
-
 router.get(
   "/",
   isAuth(["admin", "traineeAdmin", "trainer"]),

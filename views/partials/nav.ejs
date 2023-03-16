@@ -1,6 +1,6 @@
 <nav>
-  <a href="/users">Users</a>
-  <a href="/trainees">Aircrew</a>
-  <a href="/trainings">Trainings</a>
+  <% for (const key in navFields) { %>
+  <a href="<%= navFields[key] %>"><%= key %></a>
+  <% } %>
   <a href="/logout">Log Out</a>
 </nav>
