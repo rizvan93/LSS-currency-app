@@ -26,6 +26,7 @@ const nextExpiries = {
   "NVG Refresher": (expiry, lastAttended) => {
     const reattemptPeriod = 0; //months
     const validityExtension = 3; //years
+
     return getNextExpiry(
       expiry,
       lastAttended,
@@ -37,7 +38,7 @@ const nextExpiries = {
     const reattemptPeriod = 3; //months
     let validityExtension = 3; //years
     if (seniority === "Senior") {
-      const validityExtension = 5; //years
+      validityExtension = 5; //years
     }
 
     return getNextExpiry(
@@ -122,30 +123,21 @@ const getNextExpiry = (
   reattemptPeriod,
   validityExtension
 ) => {
-  console.log(`expiry: ${expiry}
-  last attended: ${lastAttended}
-  reattempt period: ${reattemptPeriod}
-  validity extension: ${validityExtension}`);
   const isBeforeExpiry = dayjs(lastAttended).isSameOrBefore(
     dayjs(expiry),
     "day"
   );
   const windowStart = dayjs(expiry).subtract(reattemptPeriod, "months");
-  console.log(`Window opens on ${windowStart}`);
   const isAfterWindowStarts = windowStart.isSameOrBefore(
     dayjs(lastAttended),
     "day"
   );
   const isDuringWindow = isBeforeExpiry && isAfterWindowStarts;
 
-  console.log(`Is before expiry: ${isBeforeExpiry}
-  Is after window starts: ${isAfterWindowStarts}
-  Is during window: ${isDuringWindow}`);
   if (isDuringWindow) {
-    console.log("attempted during window");
     return dayjs(expiry).add(validityExtension, "year").endOf("month");
   } else {
-    return lastAttended;
+    return dayjs(lastAttended).add(validityExtension, "year").endOf("month");
   }
 };
 
