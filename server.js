@@ -6,6 +6,11 @@ var logger = require("morgan");
 const methodOverride = require("method-override");
 const session = require("express-session");
 require("dotenv").config();
+const MongoStore = require("connect-mongo");
+const sessionStore = MongoStore.create({
+  mongoUrl: process.env.DATABASE_URL,
+  collectionName: "sessions",
+});
 require("./config/database");
 
 const usersRouter = require("./routes/users");
@@ -28,8 +33,12 @@ app.use(methodOverride("_method"));
 app.use(
   session({
     secret: process.env.SECRET,
+    store: sessionStore,
     resave: false,
     saveUninitialized: true,
+    cookie: {
+      maxAge: 20 * 60 * 1000, //20 mins
+    },
   })
 );
 

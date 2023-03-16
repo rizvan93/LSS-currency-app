@@ -1,4 +1,4 @@
-const auth = false;
+const auth = true;
 
 const isAuth = (accounts) => {
   return (req, res, next) => {
@@ -9,7 +9,7 @@ const isAuth = (accounts) => {
         console.log("isAuth failed");
         console.log(`searching for ${req.session.account} within`);
         console.log(accounts);
-        res.redirect(403, req.session.home);
+        res.redirect(403, req.session.home || "/");
       }
     } else {
       next();
@@ -25,7 +25,7 @@ const isTrainee = (req, res, next) => {
         next();
       } else {
         console.log("isTrainee failed");
-        res.redirect(403, req.session.home);
+        res.redirect(403, req.session.home || "/");
       }
     } else {
       next();
