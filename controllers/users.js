@@ -32,7 +32,7 @@ const authenticate = async (req, res) => {
       req.session.account = user.account;
       if (user.account === "trainee") {
         req.session.traineeId = user.traineeId;
-        homes.trainee = homes.trainee + user.traineeId.toString();
+        homes.trainee = "/trainees" + user.traineeId.toString();
       }
       req.session.home = homes[req.session.account];
 

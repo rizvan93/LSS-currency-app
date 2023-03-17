@@ -7,7 +7,7 @@ const requirements = require("../currencyRequirements");
 const getNavFields = require("../views/navBar");
 
 const index = async (req, res) => {
-  const trainings = await Training.find({}).sort({ start: -1 });
+  const trainings = await Training.find({}).sort({ start: 1 });
   const navFields = getNavFields(req.session.account);
   res.render("trainings/index", { trainings, dayjs, navFields });
 };
