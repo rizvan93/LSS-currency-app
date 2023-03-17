@@ -10,7 +10,7 @@ This web application allows aircrew to:
 - make bookings to refresh their currencies
 - have their currencies after completing a refresher
 
-### [Try the application here (login required)](lss-currency.cyclic.app)
+### [Try the application here (login required)](https://lss-currency.cyclic.app)
 
 ## Tools and Libraries
 
