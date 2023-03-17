@@ -12,10 +12,11 @@
   <dd class="<%=statuses[currency.type]%>">
     Expires: <%=dayjs(currency.expiry).format("D MMM YY")%>
   </dd>
-  <% if (nextBooked[currency.type]) {%>
+  <% if (nextBooked[currency.type]) { %>
   <dd>
     <a href="/trainings/<%=nextBooked[currency.type]._id%>"
-      >Booked: <%=dayjs(nextBooked[currency.type].end).format("D MMM YY")%></a
+      >Booked: <%= dayjs(nextBooked[currency.type].start).format("D MMM YY")
+      %></a
     >
   </dd>
   <dd>
@@ -23,11 +24,23 @@
       >Change Booking</a
     >
   </dd>
-  <%} else {%>
+  <% } else if (waitlists[currency.type]) { %>
+  <dd>
+    <a href="/trainings/<%= waitlists[currency.type]._id %>"
+      >On waitlist: <%= dayjs(waitlists[currency.type].start).format("D MMM YY")
+      %></a
+    >
+  </dd>
+  <dd>
+    <a href="/bookings/edit/<%=waitlists[currency.type]._id%>/<%=trainee._id%>"
+      >Change Booking</a
+    >
+  </dd>
+  <% } else { %>
   <dd>
     <a href="/bookings/new/<%=trainee._id%>/<%=currency.type%>/">Book</a>
   </dd>
-  <%}%>
+  <% } %>
 </dl>
 <% }) %>
 

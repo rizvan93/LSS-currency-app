@@ -23,7 +23,11 @@
         <% if (training._id.toString() === trainingId) { %>
         <form method="post" action="/bookings/<%=training._id%>?_method=DELETE">
           <input name="traineeId" value="<%=traineeId%>" class="hidden" />
+          <% if (training.trainees.includes(traineeId)) { %>
           <button>Unbook</button>
+          <% } else { %>
+          <button>Leave Waitlist</button>
+          <% } %>
         </form>
         <%} else {%>
         <form method="post" action="/bookings/<%=training._id%>?_method=PUT">
@@ -33,7 +37,11 @@
             value="<%=trainingId%>"
             class="hidden"
           />
+          <% if (training.trainees.length < training.capacity) { %>
           <button>Book</button>
+          <% } else { %>
+          <button>Join Waitlist</button>
+          <% } %>
         </form>
         <%}%>
       </td>

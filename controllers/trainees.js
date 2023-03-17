@@ -24,6 +24,7 @@ const show = async (req, res) => {
   const { traineeId } = req.params;
   const trainee = await Trainee.findById(traineeId);
   const nextBooked = {};
+  const waitlists = {};
   const statuses = {};
 
   for (const currency of trainee.currencies) {
@@ -33,10 +34,20 @@ const show = async (req, res) => {
         trainees: traineeId,
         complete: false,
       },
-      "end"
+      "start"
+    );
+    const waitlist = await Training.findOne(
+      {
+        type: currency.type,
+        waitlist: traineeId,
+        complete: false,
+      },
+      "start"
     );
     if (booking) {
       nextBooked[currency.type] = booking;
+    } else if (waitlist) {
+      waitlists[currency.type] = waitlist;
     }
     statuses[currency.type] = requirements.getStatus(currency.expiry);
   }
@@ -48,6 +59,7 @@ const show = async (req, res) => {
   res.render("trainees/show", {
     trainee,
     nextBooked,
+    waitlists,
     statuses,
     overallStatus,
     dayjs,

@@ -34,7 +34,7 @@
       <tbody>
         <% training.trainees.forEach((trainee) => { %>
         <tr>
-          <td><%= trainee.name %></td>
+          <td><a href="/trainees/<%=trainee._id%>"><%= trainee.name %></a></td>
           <td><%= trainee.contact %></td>
           <td><%= trainee.vehNum %></td>
           <td><%= dayjs(trainee.currencies.find(currency => currency.type === training.type).expiry).format("D MMM YY") %></td>
@@ -51,5 +51,28 @@
   </form>
 </div>
 <%}%>
+
+<% if (training.waitlist.length) { %>
+  <div>
+    <h4>Waitlist</h4>
+    <table>
+      <thead>
+        <th>Name</th>
+        <th>Contact</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </thead>
+        <tbody>
+          <% training.waitlist.forEach((trainee) => { %>
+          <tr>
+            <td><%= trainee.name %></td>
+            <td><%= trainee.contact %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+  </div>
+<% } %>
 
 <%- include("../partials/footer")%>

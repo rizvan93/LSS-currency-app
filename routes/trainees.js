@@ -9,7 +9,7 @@ router.get("/new", isAuth(["admin", "traineeAdmin"]), traineeCtrl.new);
 
 router.get(
   "/:traineeId",
-  isAuth(["admin", "traineeAdmin", "trainee"]),
+  isAuth(["admin", "traineeAdmin", "trainee", "trainer"]),
   isTrainee,
   traineeCtrl.show
 );

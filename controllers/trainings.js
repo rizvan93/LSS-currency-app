@@ -14,7 +14,9 @@ const index = async (req, res) => {
 
 const show = async (req, res) => {
   const { trainingId } = req.params;
-  const training = await Training.findById(trainingId).populate("trainees");
+  const training = await Training.findById(trainingId)
+    .populate("trainees")
+    .populate("waitlist");
 
   let navFields = getNavFields(req.session.account);
   if (req.session.account === "trainee") {

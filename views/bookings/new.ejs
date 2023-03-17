@@ -20,15 +20,15 @@
       </td>
       <td><a href="/trainings/<%= training._id %>">See Details</a></td>
       <td>
-        <% if (training.trainees.length < training.capacity) { %>
         <form method="post" action="/bookings/">
           <input name="traineeId" value="<%=traineeId%>" class="hidden" />
           <input name="trainingId" value="<%=training._id%>" class="hidden" />
+          <% if (training.trainees.length < training.capacity) { %>
           <button>Book</button>
+          <% } else { %>
+          <button>Join Waitlist</button>
+          <% } %>
         </form>
-        <% } else { %>
-        <a>See Details</a>
-        <% } %>
       </td>
     </tr>
     <%})%>

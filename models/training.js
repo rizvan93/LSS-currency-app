@@ -9,8 +9,9 @@ const trainingSchema = new Schema(
     start: { type: Date, required: true },
     end: { type: Date, required: true },
     remarks: { type: String },
-    trainees: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Trainee" }],
     complete: { type: Boolean, default: false },
+    trainees: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Trainee" }],
+    waitlist: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Trainee" }],
   },
   { timestamps: true }
 );
