@@ -5,18 +5,23 @@ const { isAuth, isTrainee } = require("../controllers/isAuth");
 
 router.get(
   "/new/:traineeId/:type/",
-  isAuth(["trainee"]),
+  isAuth(["trainee", "trainer"]),
   isTrainee,
   bookingCtrl.new
 );
-router.post("/", isAuth(["trainee"]), bookingCtrl.create);
+router.post("/", isAuth(["trainee", "trainer"]), bookingCtrl.create);
 router.get(
   "/edit/:trainingId/:traineeId/",
-  isAuth(["trainee"]),
+  isAuth(["trainee", "trainer"]),
   isTrainee,
   bookingCtrl.edit
 );
-router.put("/:trainingId", isAuth(["trainee"]), isTrainee, bookingCtrl.update);
+router.put(
+  "/:trainingId",
+  isAuth(["trainee", "trainer"]),
+  isTrainee,
+  bookingCtrl.update
+);
 router.delete(
   "/:trainingId",
   isAuth(["trainee"]),

@@ -25,14 +25,12 @@ router.delete(
 router.get(
   "/:traineeId/edit",
   isAuth(["admin", "traineeAdmin"]),
-  isTrainee,
   traineeCtrl.edit
 );
 
 router.put(
   "/:traineeId",
   isAuth(["admin", "traineeAdmin"]),
-  isTrainee,
   traineeCtrl.update
 );
 
