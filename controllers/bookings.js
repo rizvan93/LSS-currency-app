@@ -4,7 +4,7 @@ const getNavFields = require("../views/navBar");
 
 const newBooking = async (req, res) => {
   const { traineeId, type } = req.params;
-  const trainings = await Training.find({ type: type });
+  const trainings = await Training.find({ type: type, complete: false });
 
   const navFields = {
     Back: "/trainees/" + traineeId,
@@ -24,7 +24,7 @@ const create = async (req, res) => {
 const edit = async (req, res) => {
   const { trainingId, traineeId } = req.params;
   const { type } = await Training.findById(trainingId);
-  const trainings = await Training.find({ type: type });
+  const trainings = await Training.find({ type: type, complete: false });
 
   const navFields = {
     Back: "/trainees/" + traineeId,

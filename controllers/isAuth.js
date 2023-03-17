@@ -17,7 +17,13 @@ const isAuth = (accounts) => {
 const isTrainee = (req, res, next) => {
   if (auth) {
     if (req.session.account === "trainee") {
-      const { traineeId } = req.params;
+      let { traineeId } = req.params;
+      if (!traineeId) {
+        traineeId = req.body.traineeId;
+      }
+      console.log(
+        `trainee auth. session: ${req.session.traineeId}, param: ${traineeId}`
+      );
       if (req.session.traineeId === traineeId) {
         next();
       } else {

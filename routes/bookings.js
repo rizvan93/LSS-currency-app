@@ -24,7 +24,7 @@ router.put(
 );
 router.delete(
   "/:trainingId",
-  isAuth(["trainee"]),
+  isAuth(["trainee", "trainer"]),
   isTrainee,
   bookingCtrl.delete
 );

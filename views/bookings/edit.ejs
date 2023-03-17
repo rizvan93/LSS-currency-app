@@ -7,6 +7,7 @@
     <th>End</th>
     <th>Vacancies</th>
     <th>Actions</th>
+    <th></th>
   </thead>
   <tbody>
     <% trainings.forEach((training) => {%>
@@ -17,11 +18,12 @@
         <%= training.capacity - training.trainees.length%>/<%=training.capacity
         %>
       </td>
+      <td><a href="/trainings/<%= training._id %>">See Details</a></td>
       <td>
         <% if (training._id.toString() === trainingId) { %>
         <form method="post" action="/bookings/<%=training._id%>?_method=DELETE">
           <input name="traineeId" value="<%=traineeId%>" class="hidden" />
-          <button>Delete Booking</button>
+          <button>Unbook</button>
         </form>
         <%} else {%>
         <form method="post" action="/bookings/<%=training._id%>?_method=PUT">
@@ -31,7 +33,7 @@
             value="<%=trainingId%>"
             class="hidden"
           />
-          <button>Change Booking</button>
+          <button>Book</button>
         </form>
         <%}%>
       </td>

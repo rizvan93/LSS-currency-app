@@ -16,7 +16,13 @@ const show = async (req, res) => {
   const { trainingId } = req.params;
   const training = await Training.findById(trainingId).populate("trainees");
 
-  const navFields = getNavFields(req.session.account);
+  let navFields = getNavFields(req.session.account);
+  if (req.session.account === "trainee") {
+    navFields = {
+      Back: "/trainees/" + req.session.traineeId,
+      ...navFields,
+    };
+  }
   res.render("trainings/show", { training, dayjs, navFields });
 };
 

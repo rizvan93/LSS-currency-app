@@ -7,6 +7,7 @@
     <th>End</th>
     <th>Vacancies</th>
     <th>Actions</th>
+    <th></th>
   </thead>
   <tbody>
     <% trainings.forEach((training) => {%>
@@ -17,6 +18,7 @@
         <%= training.capacity - training.trainees.length%>/<%=training.capacity
         %>
       </td>
+      <td><a href="/trainings/<%= training._id %>">See Details</a></td>
       <td>
         <% if (training.trainees.length < training.capacity) { %>
         <form method="post" action="/bookings/">
@@ -25,7 +27,7 @@
           <button>Book</button>
         </form>
         <% } else { %>
-        <a href="/trainings/<%= training._id %>">See Details</a>
+        <a>See Details</a>
         <% } %>
       </td>
     </tr>
