@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Trainee = require("../models/trainee");
 const bcrypt = require("bcrypt");
 const getNavFields = require("../views/navBar");
 
@@ -89,7 +90,6 @@ const create = async (req, res) => {
     return;
   }
 
-  console.log("waiting to create user");
   req.body.password = await bcrypt.hash(password, saltRounds);
   await User.create(req.body);
 
@@ -98,7 +98,10 @@ const create = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   const { id } = req.params;
-  await User.findByIdAndDelete(id);
+  const deletedUser = await User.findByIdAndDelete(id);
+  if (deletedUser.account === "trainee") {
+    await Trainee.findByIdAndDelete(deletedUser.traineeId);
+  }
 
   res.redirect("/users");
 };

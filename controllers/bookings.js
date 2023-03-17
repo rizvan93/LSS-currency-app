@@ -23,6 +23,7 @@ const create = async (req, res) => {
 
 const edit = async (req, res) => {
   const { trainingId, traineeId } = req.params;
+
   const { type } = await Training.findById(trainingId);
   const trainings = await Training.find({ type: type, complete: false });
 
@@ -45,8 +46,11 @@ const update = async (req, res) => {
   const { traineeId, previousBooking } = req.body;
 
   await unbook(traineeId, previousBooking);
-  await book(traineeId, trainingId);
-  await updateWaitlist(previousBooking);
+
+  const makingNewBooking = book(traineeId, trainingId);
+  const updatingOldBooking = updateWaitlist(previousBooking);
+
+  await Promise.all([makingNewBooking, updatingOldBooking]);
 
   res.redirect("/trainees/" + traineeId);
 };
@@ -83,18 +87,14 @@ const book = async (traineeId, trainingId) => {
 };
 
 const unbook = async (traineeId, trainingId) => {
-  console.log("within unbook function");
   const training = await Training.findById(trainingId);
   const index = training.trainees.indexOf(traineeId.toString());
   if (index >= 0) {
-    console.log("delete trainee");
     training.trainees.splice(index, 1);
   } else {
-    console.log("index:" + index);
     const waitlistIndex = training.waitlist.indexOf(traineeId.toString());
     training.waitlist.splice(waitlistIndex, 1);
   }
-  console.log(training);
   await training.save();
 };
 

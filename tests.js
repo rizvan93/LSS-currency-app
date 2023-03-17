@@ -1,5 +1,7 @@
 const requirements = require("./currencyRequirements");
 const dayjs = require("dayjs");
+const Trainee = require("./models/trainee");
+const { findById } = require("./models/trainee");
 
 // console.log(`Current expiry: ${expiry}
 // Attempted: ${lastAttended}
@@ -11,14 +13,14 @@ const insert6 = (array) => {
   array.push(6);
 };
 
-insert6(testArray);
+// insert6(testArray);
 
 const expiry = dayjs("2023-04-30");
 const lastAttended = dayjs("2023-03-02");
 const seniority = "Junior";
-const getNextExpiry =
-  requirements.nextExpiries["Dinghy Drill & Ejection Seat Trainer"];
-const newExpiry = getNextExpiry(expiry, lastAttended, seniority);
+// const getNextExpiry =
+//   requirements.nextExpiries["Dinghy Drill & Ejection Seat Trainer"];
+// const newExpiry = getNextExpiry(expiry, lastAttended, seniority);
 
 const sampleCurrencies = [
   {
@@ -56,7 +58,16 @@ const sampleTraining = {
   end: dayjs("2024-03-01"),
 };
 
-requirements.updateExpiries(sampleCurrencies, sampleTraining, "Junior");
+// requirements.updateExpiries(sampleCurrencies, sampleTraining, "Junior");
 
-console.log(sampleCurrencies[3]);
-console.log(sampleCurrencies[4]);
+const testPromises = async () => {
+  const trainee = Trainee.findById("64131344f57b9337eedcc3f6");
+  const trainee2 = Trainee.findById("641313a1f57b9337eedcc44b");
+  const trainee3 = Trainee.findById("64131407f57b9337eedcc4a7");
+
+  const values = await Promise.all([trainee, trainee2, trainee3]);
+
+  for (const value of values) {
+    console.log(value.name);
+  }
+};

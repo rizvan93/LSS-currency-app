@@ -1,0 +1,58 @@
+<%- include("./partials/header") %>
+<h1>Currency Requirements Test Page</h1>
+
+<form method="post" action="/test/">
+  <fieldset>
+    <legend>Training Attended</legend>
+    <label
+      >Type:
+      <select name="trainingType" required>
+        <% currencies.forEach((currency) => { %>
+        <option value="<%= currency.type %>" <% if (training.type === currency.type) { %> selected <% } %>><%= currency.type %></option>
+        <% }) %>
+      </select>
+    </label>
+
+    <label
+      >Date: <input type="date" name="trainingDate" value="<%= training.end %>"
+    /></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Aircrew Details</legend>
+
+    <select name="seniority" required>
+      <option value="Junior">Junior Aircrew</option>
+      <option value="Senior">Senior Aircrew</option>
+    </select>
+    <table>
+      <thead>
+        <th>Currency</th>
+        <th>Expiry Before Training</th>
+        <th>Expiry After Training</th>
+      </thead>
+      <tbody>
+        <% currencies.forEach((currency)=>{ %>
+        <tr>
+          <td>
+            <%= currency.type %> <% if (currency.type === "DFS YOGA") {
+            %>(ignore for Senior Aircrew)<% } %>
+          </td>
+          <td>
+            <input
+              type="date"
+              name="<%= currency.type %>"
+              value="<%= currency.oldExpiry %>"
+            />
+          </td>
+          <td>
+            <input type="date" value="<%= dayjs(currency.expiry).format("YYYY-MM-DD") %>" />
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </fieldset>
+  <button>TEST</button>
+</form>
+<%- include("./partials/footer") %>

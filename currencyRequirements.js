@@ -45,15 +45,20 @@ const updateExpiries = (currencies, training, seniority) => {
   );
   if (index >= 0) {
     const updatedCurrency = currencies[index];
+    let refreshToEndOfMonth = true;
     let { reattemptWindow, extension } = currencyDetails[training.type];
     if (training.type === "DFS Refresher" && seniority === "Senior") {
       extension = currencyDetails[training.type].extensionSenior;
+    }
+    if (training.type === "ACE") {
+      refreshToEndOfMonth = false;
     }
     updatedCurrency.expiry = getNextExpiry(
       updatedCurrency.expiry,
       training.end,
       reattemptWindow,
-      extension
+      extension,
+      refreshToEndOfMonth
     );
 
     if (training.type === "DFS Refresher") {
@@ -109,7 +114,8 @@ const getNextExpiry = (
   expiry,
   lastAttended,
   reattemptPeriod,
-  validityExtension
+  validityExtension,
+  refreshToEndOfMonth
 ) => {
   const isBeforeExpiry = dayjs(lastAttended).isSameOrBefore(
     dayjs(expiry),
@@ -123,7 +129,11 @@ const getNextExpiry = (
   const isDuringWindow = isBeforeExpiry && isAfterWindowStarts;
 
   if (isDuringWindow) {
-    return dayjs(expiry).add(validityExtension, "year").endOf("month");
+    if (refreshToEndOfMonth) {
+      return dayjs(expiry).add(validityExtension, "year").endOf("month");
+    } else {
+      return dayjs(expiry).add(validityExtension, "year");
+    }
   } else {
     return dayjs(lastAttended).add(validityExtension, "year").endOf("month");
   }

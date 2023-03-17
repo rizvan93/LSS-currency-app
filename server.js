@@ -17,6 +17,7 @@ const usersRouter = require("./routes/users");
 const traineesRouter = require("./routes/trainees");
 const trainingsRouter = require("./routes/trainings");
 const bookingsRouter = require("./routes/bookings");
+const test = require("./testCurrencyAlgo");
 
 const app = express();
 
@@ -46,6 +47,7 @@ app.use("/", usersRouter);
 app.use("/trainees", traineesRouter);
 app.use("/trainings", trainingsRouter);
 app.use("/bookings", bookingsRouter);
+app.use("/test", test);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

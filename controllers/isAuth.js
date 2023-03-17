@@ -21,9 +21,6 @@ const isTrainee = (req, res, next) => {
       if (!traineeId) {
         traineeId = req.body.traineeId;
       }
-      console.log(
-        `trainee auth. session: ${req.session.traineeId}, param: ${traineeId}`
-      );
       if (req.session.traineeId === traineeId) {
         next();
       } else {

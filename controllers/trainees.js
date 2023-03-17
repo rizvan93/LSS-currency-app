@@ -102,26 +102,25 @@ const create = async (req, res) => {
   }
   console.log("after verification");
 
-  const newTrainee = {};
-  const trainee = await Trainee.create(
-    fillTraineeFromBody(newTrainee, req.body)
-  );
+  const newTrainee = await Trainee.create(fillTraineeFromBody({}, req.body));
 
   const newUser = {
     userId: req.body.userId,
     password: await bcrypt.hash(password, saltRounds),
     account: "trainee",
-    traineeId: trainee._id,
+    traineeId: newTrainee._id,
   };
-  console.log(await User.create(newUser));
-  console.log("user created");
+  await User.create(newUser);
+
   res.redirect("/trainees");
 };
 
 const deleteTrainee = async (req, res) => {
   const { traineeId } = req.params;
-  await User.findOneAndDelete({ traineeId: traineeId });
-  await Trainee.findByIdAndDelete(traineeId);
+  const deletingUser = User.findOneAndDelete({ traineeId: traineeId });
+  const deletingTrainee = Trainee.findByIdAndDelete(traineeId);
+
+  await Promise.all([deletingUser, deletingTrainee]);
   res.redirect("/trainees");
 };
 
