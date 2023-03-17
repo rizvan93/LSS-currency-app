@@ -15,7 +15,7 @@ router.get(
 );
 router.get(
   "/:trainingId",
-  isAuth(["admin", "traineeAdmin", "trainer"]),
+  isAuth(["admin", "traineeAdmin", "trainer", "trainee"]),
   trainingsCtrl.show
 );
 router.get(
